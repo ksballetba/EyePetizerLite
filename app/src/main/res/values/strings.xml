@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">开眼 Lite</string>
+    <string name="menu_home">首页</string>
+    <string name="menu_explorer">发现</string>
+    <string name="menu_hot">热门</string>
+    <string name="menu_fav">我喜欢的</string>
+    <string name="menu_download">我的缓存</string>
+    <string name="menu_comments">我的消息</string>
+    <string name="menu_history">观看记录</string>
+    <string name="hot_category">热门分类</string>
+    <string name="all_category">查看全部分类</string>
+    <string name="guess_rec">猜你喜欢</string>
+    <string name="all_rec">查看更多推荐</string>
+    <string name="action_fav">添加到我的喜欢</string>
+    <string name="action_download">添加到缓存队列</string>
+    <string name="related_reco">相关推荐</string>
+    <string name="related_replies">最新评论</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.acitvities.PlayDetailActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            app:titleEnabled="false"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:collapsedTitleGravity="center"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer
+                android:id="@+id/video_player"
+                android:layout_width="match_parent"
+                android:layout_height="232dp"
+                android:fitsSystemWindows="true">
+
+            </com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="@dimen/material_component_bottom_sheet_edge_top_bottom_margins">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="@dimen/material_component_bottom_sheet_edge_left_right_margins">
+
+                <TextView
+                    android:id="@+id/playdetail_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/material_typography_body1"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/playdetail_category"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text"/>
+
+                <TextView
+                    android:id="@+id/playdetail_refer"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/material_typography_caption"
+                    android:textColor="@color/secondary_text"/>
+
+                <LinearLayout
+                    android:layout_marginTop="@dimen/material_component_bottom_sheet_edge_top_bottom_margins"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:src="@drawable/ic_favorite_border_grey_700_24dp"
+                        android:layout_width="@dimen/material_layout_icon"
+                        android:layout_height="@dimen/material_layout_icon" />
+
+                    <TextView
+                        android:id="@+id/playdetail_favcount"
+                        android:layout_marginStart="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical" />
+
+                    <ImageView
+                        android:src="@drawable/ic_comment_grey_700_24dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_width="@dimen/material_layout_icon"
+                        android:layout_height="@dimen/material_layout_icon" />
+
+                    <TextView
+                        android:id="@+id/playdetail_commentscount"
+                        android:layout_marginStart="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical" />
+
+                    <ImageView
+                        android:src="@drawable/ic_file_download_grey_700_24dp"
+                        android:layout_marginStart="30dp"
+                        android:layout_width="@dimen/material_layout_icon"
+                        android:layout_height="@dimen/material_layout_icon" />
+
+                    <TextView
+                        android:id="@+id/playdetail_downloadcount"
+                        android:layout_marginStart="4dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/material_component_bottom_sheet_edge_left_right_margins"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/playdetail_avatar"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/divider"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="@dimen/material_component_floating_action_button_mini_size"
+                    android:layout_height="@dimen/material_component_floating_action_button_mini_size" />
+
+                <LinearLayout
+                    android:layout_toEndOf="@id/playdetail_avatar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/material_component_bottom_sheet_edge_left_right_margins"
+                    android:layout_marginEnd="@dimen/material_component_bottom_sheet_edge_left_right_margins">
+
+                    <TextView
+                        android:id="@+id/playdetail_authorname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/material_typography_body1"
+                        android:textColor="@color/primary_text"
+                        android:maxLines="1"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/playdetail_authorslogan"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textColor="@color/secondary_text" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/divider"/>
+
+            <LinearLayout
+                android:layout_margin="@dimen/material_component_bottom_sheet_edge_left_right_margins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginTop="@dimen/material_component_bottom_sheet_edge_top_bottom_margins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/material_typography_body1"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:text="@string/related_reco"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/playdetail_recorec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginTop="8dp">
+
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_margin="@dimen/material_component_bottom_sheet_edge_left_right_margins"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginTop="@dimen/material_component_bottom_sheet_edge_top_bottom_margins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/material_typography_body1"
+                    android:textColor="@color/primary_text"
+                    android:textStyle="bold"
+                    android:text="@string/related_replies"/>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/playdetail_commentsrec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    android:layout_marginTop="8dp">
+
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

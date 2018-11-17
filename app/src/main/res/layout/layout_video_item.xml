@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/video_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/material_component_cards_padding_from_edge_of_screen_to_card"
+        android:clickable="true"
+        android:focusable="true"
+        app:cardElevation="0dp"
+        android:foreground="?attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="232dp"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="5dp">
+
+                <ImageView
+                    android:id="@+id/video_item_cover"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/video_item_duration"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/icons"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|bottom"
+                    android:layout_margin="8dp"
+                    android:textStyle="bold" />
+
+            </androidx.cardview.widget.CardView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/video_item_avatar"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/divider"
+                    android:layout_alignParentStart="true"
+                    android:layout_width="@dimen/material_component_floating_action_button_mini_size"
+                    android:layout_height="@dimen/material_component_floating_action_button_mini_size" />
+
+                <LinearLayout
+                    android:layout_toEndOf="@id/video_item_avatar"
+                    android:layout_toStartOf="@id/video_item_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/material_component_bottom_sheet_edge_left_right_margins"
+                    android:layout_marginEnd="@dimen/material_component_bottom_sheet_edge_left_right_margins">
+
+                    <TextView
+                        android:id="@+id/video_item_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/material_typography_body1"
+                        android:textColor="@color/primary_text"
+                        android:maxLines="1"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/video_item_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:textColor="@color/secondary_text" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/video_item_action"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_more_vert_grey_700_24dp"/>
+
+            </RelativeLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

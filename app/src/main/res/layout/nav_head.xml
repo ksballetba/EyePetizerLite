@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_head"
+    android:layout_width="match_parent"
+    android:clickable="true"
+    android:layout_height="200dp">
+
+    <ImageView
+        android:id="@+id/nav_headbg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/nav_headbg"
+        android:scaleType="centerCrop"
+        android:fitsSystemWindows="true"/>
+
+    <ImageView
+        android:background="@color/trans"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"/>
+
+</RelativeLayout>

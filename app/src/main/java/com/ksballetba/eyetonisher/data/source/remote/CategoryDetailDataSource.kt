@@ -96,7 +96,7 @@ class CategoryDetailDataSource constructor(val id: Int){
                 )
     }
 
-    fun loadProviderListInitial(callBack: (MutableList<CategotyProvidersBean.Item>) -> Unit) {
+    fun loadProviderListInitial(callBack: (MutableList<CategotyPlaylistBean.Item>) -> Unit) {
         mLoadStatus.postValue(NetworkState.LOADING)
         RetrofitClient.instance
                 .create(ApiService::class.java)
@@ -168,7 +168,7 @@ class CategoryDetailDataSource constructor(val id: Int){
                 )
     }
 
-    fun loadProviderListAfter(callBack: (MutableList<CategotyProvidersBean.Item>) -> Unit) {
+    fun loadProviderListAfter(callBack: (MutableList<CategotyPlaylistBean.Item>) -> Unit) {
         mLoadStatus.postValue(NetworkState.LOADING)
         RetrofitClient.instance
                 .create(ApiService::class.java)

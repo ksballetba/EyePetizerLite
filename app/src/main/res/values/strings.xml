@@ -9,6 +9,8 @@
     <string name="menu_history">观看记录</string>
     <string name="hot_category">热门分类</string>
     <string name="all_category">查看全部分类</string>
+    <string name="hot_topic">近期专题</string>
+    <string name="all_topic">查看全部专题</string>
     <string name="guess_rec">猜你喜欢</string>
     <string name="all_rec">查看更多推荐</string>
     <string name="action_fav">添加到我的喜欢</string>

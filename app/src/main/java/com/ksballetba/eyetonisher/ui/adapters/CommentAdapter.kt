@@ -38,7 +38,8 @@ class CommentAdapter(val mItems:MutableList<RepliesBean.Item>, val mOnClickListe
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         fun bind(model: RepliesBean.Item){
             val options = RequestOptions().placeholder(R.color.icons).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-            Glide.with(mContext!!).load(model.data.user.avatar).into(holder.commentItemAvatar)
+            if(model.data.user.avatar!=null)
+                Glide.with(mContext!!).load(model.data.user.avatar).into(holder.commentItemAvatar)
             holder.commentItemUser.text = model.data.user.nickname
             holder.commentItemContent.text = model.data.message
             holder.commentItemLikeCount.text = model.data.likeCount.toString()

@@ -3,16 +3,18 @@ package com.ksballetba.eyetonisher.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.Gravity
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
+import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.CategoryHomeListBean
@@ -23,6 +25,7 @@ import com.ksballetba.eyetonisher.network.Status
 import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.CategoryHotAdapter
+import com.ksballetba.eyetonisher.ui.adapters.CategoryPlaylistAdapter
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.RankAdapter
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
@@ -48,9 +51,11 @@ class CategoryDetailFragment : Fragment() {
     var mHotVideoList = mutableListOf<CategoryHomeListBean.Item>()
     var mAllVideoList = mutableListOf<RankListBean.Item>()
     var mPlayList = mutableListOf<CategotyPlaylistBean.Item>()
-    var mProviderList = mutableListOf<CategotyProvidersBean.Item>()
+    var mProviderList = mutableListOf<CategotyPlaylistBean.Item>()
     lateinit var mHotAdapter:CategoryHotAdapter
     lateinit var mAllAdapter:RankAdapter
+    lateinit var mPlaylistAdapter:CategoryPlaylistAdapter
+    lateinit var mProvidersAdapter:CategoryPlaylistAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -72,10 +77,10 @@ class CategoryDetailFragment : Fragment() {
                 initAllRec(id)
             }
             "playlist"->{
-
+                initPlaylistRec(id)
             }
             "providerlist"->{
-
+                initProviderlistRec(id)
             }
         }
     }
@@ -118,6 +123,9 @@ class CategoryDetailFragment : Fragment() {
                 it.type == "video"
             }.toMutableList()
             mHotAdapter.update(mHotVideoList)
+            val topicBg = activity?.findViewById<ImageView>(R.id.category_bg)
+            val options = RequestOptions().placeholder(R.color.icons).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+            Glide.with(context).load(mHotVideoList[3].data.cover.detail).apply(options).transition(DrawableTransitionOptions.withCrossFade(500)).into(topicBg)
         })
         category_detail_refresh.setOnRefreshListener {
             mViewModel.fetchHotVideoList().observe(viewLifecycleOwner, Observer {
@@ -180,6 +188,107 @@ class CategoryDetailFragment : Fragment() {
         }
     }
 
+    private fun initPlaylistRec(id:Int){
+        mViewModel = getCategoryDeatilViewModel(this,id)
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = RecyclerView.VERTICAL
+        val itemOnClickListener = object : HomeAdapter.ItemOnClickListener{
+            override fun onDetailClick(idx: Int) {
+
+            }
+            override fun onActionClick(idx: Int) {
+
+            }
+        }
+        mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList,itemOnClickListener)
+        category_detail_rec.layoutManager = layoutManager
+        category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
+        category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f,0f,context!!))
+        val animationAdapter = ScaleInAnimationAdapter(mPlaylistAdapter)
+        animationAdapter.setFirstOnly(false)
+        category_detail_rec.adapter = animationAdapter
+        mViewModel.fetchLoadDataStatus().observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.RUNNING -> {
+                    category_detail_refresh.autoRefresh()
+                }
+                Status.SUCCESS -> {
+                    category_detail_refresh.finishRefresh()
+                }
+                Status.FAILED -> {
+                    activity?.toast("网络加载失败")
+                }
+            }
+        })
+        mViewModel.fetchPlaylistInitial().observe(viewLifecycleOwner, Observer {
+            mPlaylistAdapter.update(it)
+            mPlayList = it.toMutableList()
+        })
+        category_detail_refresh.setOnRefreshListener {
+            mViewModel.fetchPlaylistInitial().observe(viewLifecycleOwner, Observer {
+                mPlaylistAdapter.update(it)
+                mPlayList = it.toMutableList()
+            })
+        }
+        category_detail_refresh.setOnLoadMoreListener {
+            mViewModel.fetchPlaylistAfter().observe(viewLifecycleOwner, Observer {
+                mPlaylistAdapter.add(it)
+                mPlayList.addAll(it)
+                category_detail_refresh.finishLoadMore()
+            })
+        }
+    }
+
+    private fun initProviderlistRec(id:Int){
+        mViewModel = getCategoryDeatilViewModel(this,id)
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = RecyclerView.VERTICAL
+        val itemOnClickListener = object : HomeAdapter.ItemOnClickListener{
+            override fun onDetailClick(idx: Int) {
+
+            }
+            override fun onActionClick(idx: Int) {
+
+            }
+        }
+        mProvidersAdapter = CategoryPlaylistAdapter(mProviderList,itemOnClickListener)
+        category_detail_rec.layoutManager = layoutManager
+        category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
+        category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f,0f,context!!))
+        val animationAdapter = ScaleInAnimationAdapter(mProvidersAdapter)
+        animationAdapter.setFirstOnly(false)
+        category_detail_rec.adapter = animationAdapter
+        mViewModel.fetchLoadDataStatus().observe(viewLifecycleOwner, Observer {
+            when (it.status) {
+                Status.RUNNING -> {
+                    category_detail_refresh.autoRefresh()
+                }
+                Status.SUCCESS -> {
+                    category_detail_refresh.finishRefresh()
+                }
+                Status.FAILED -> {
+                    activity?.toast("网络加载失败")
+                }
+            }
+        })
+        mViewModel.fetchProviderListInitial().observe(viewLifecycleOwner, Observer {
+            mProvidersAdapter.update(it)
+            mProviderList = it.toMutableList()
+        })
+        category_detail_refresh.setOnRefreshListener {
+            mViewModel.fetchProviderListAfter().observe(viewLifecycleOwner, Observer {
+                mProvidersAdapter.update(it)
+                mProviderList = it.toMutableList()
+            })
+        }
+        category_detail_refresh.setOnLoadMoreListener {
+            mViewModel.fetchProviderListAfter().observe(viewLifecycleOwner, Observer {
+                mProvidersAdapter.add(it)
+                mProviderList.addAll(it)
+                category_detail_refresh.finishLoadMore()
+            })
+        }
+    }
 
 
     private fun navigateToPlayDetail(videoId:Int,videoUrl:String,videoTitle:String,videoThumb:String){
@@ -217,4 +326,6 @@ class CategoryDetailFragment : Fragment() {
         category_detail_refresh.setEnableFooterTranslationContent(true)//是否上拉Footer的时候向上平移列表或者内容
         category_detail_refresh.setEnableLoadMoreWhenContentNotFull(true)
     }
+
+
 }

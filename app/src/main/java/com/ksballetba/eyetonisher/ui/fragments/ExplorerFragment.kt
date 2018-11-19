@@ -106,7 +106,6 @@ class ExplorerFragment : Fragment() {
             }
         }
         val recoAdapter = HomeAdapter(recoList,itemOnClickListener)
-
         reco_rec.adapter = recoAdapter
         reco_rec.addItemDecoration(BannerItemDecoration())
         val snapHelper = PagerSnapHelper()

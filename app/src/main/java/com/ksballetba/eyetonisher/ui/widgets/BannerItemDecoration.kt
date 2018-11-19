@@ -12,7 +12,7 @@ import com.blankj.utilcode.util.SizeUtils
 class BannerItemDecoration:RecyclerView.ItemDecoration(){
 
     var screenWidth = ScreenUtils.getScreenWidth()
-    var mLeftPageVisibleWidth = 16f
+    var mLeftPageVisibleWidth = 8f
     var mPageMargin = 2f
     //第一张图片的左边距
 
@@ -23,7 +23,7 @@ class BannerItemDecoration:RecyclerView.ItemDecoration(){
         val rightMargin = if (positon == (itemCount!! - 1)) dp2px(mLeftPageVisibleWidth) else dp2px(mPageMargin) //同上，设置最后一张图片
         val lp = view.layoutParams as RecyclerView.LayoutParams
         lp.width = screenWidth - 2*dp2px(mLeftPageVisibleWidth)
-        lp.setMargins(leftMargin, 0, rightMargin, 0) //30和60分别是item到上下的margin
+        lp.setMargins(leftMargin, 0, rightMargin, 0)
         view.layoutParams = lp //设置参数
         super.getItemOffsets(outRect, view, parent, state)
     }

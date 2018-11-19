@@ -2,14 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
+    <FrameLayout
         android:id="@+id/video_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/material_component_cards_padding_from_edge_of_screen_to_card"
+        android:layout_margin="8dp"
         android:clickable="true"
         android:focusable="true"
-        app:cardElevation="0dp"
         android:foreground="?attr/selectableItemBackground">
 
         <LinearLayout
@@ -19,7 +18,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="232dp"
+                android:layout_height="223dp"
                 app:cardElevation="0dp"
                 app:cardCornerRadius="5dp">
 
@@ -90,5 +89,5 @@
 
             </RelativeLayout>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </FrameLayout>
 </layout>

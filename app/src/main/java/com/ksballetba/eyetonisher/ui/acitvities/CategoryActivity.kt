@@ -1,9 +1,10 @@
 package com.ksballetba.eyetonisher.ui.acitvities
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import androidx.fragment.app.Fragment
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.ui.fragments.CategoryDetailFragment
@@ -21,7 +22,8 @@ class CategoryActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+        window.statusBarColor = Color.TRANSPARENT
         setContentView(R.layout.activity_category)
         initToolbar()
         initFragments()
@@ -76,10 +78,20 @@ class CategoryActivity : AppCompatActivity() {
         mFragmentList.add(mPlaylistFragment)
         mFragmentList.add(mProviderListFragment)
         category_viewpager.adapter = ViewPagerAdapter(mFragmentList,supportFragmentManager)
+        category_viewpager.offscreenPageLimit = 4
         category_tablayout.setupWithViewPager(category_viewpager)
         category_tablayout.getTabAt(0)?.text = "热门"
         category_tablayout.getTabAt(1)?.text = "全部"
         category_tablayout.getTabAt(2)?.text = "专辑"
         category_tablayout.getTabAt(3)?.text = "作者"
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId){
+            android.R.id.home->{
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

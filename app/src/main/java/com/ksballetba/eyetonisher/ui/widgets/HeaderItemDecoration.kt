@@ -16,7 +16,7 @@ class HeaderItemDecoration : RecyclerView.ItemDecoration {
     private var callback: DecorationCallback
     private var fontMetrics: Paint.FontMetrics
 
-    val leftMargin = ConvertUtils.dp2px(12.toFloat()).toFloat()
+    val leftMargin = ConvertUtils.sp2px(16.toFloat()).toFloat()
     val topMargin = ConvertUtils.sp2px(32.toFloat())
     val titleMargin = ConvertUtils.dp2px(12.toFloat())
 
@@ -46,7 +46,7 @@ class HeaderItemDecoration : RecyclerView.ItemDecoration {
             val title = callback.getGroupFirstTitle(position)
             if (callback.isGroupFirst(position)) {
                 val baseline = (view.top - parent.marginTop - titleMargin).toFloat()
-                c.drawText(title, leftMargin, baseline, textPaint)
+                c.drawText(title, view.left.toFloat(), baseline, textPaint)
             }
         }
     }
@@ -55,7 +55,7 @@ class HeaderItemDecoration : RecyclerView.ItemDecoration {
         super.getItemOffsets(outRect, view, parent, state)
         val position = parent.getChildAdapterPosition(view)
         if (position == 0) {
-            outRect.top = (1.5 * topMargin).toInt()
+            outRect.top = ConvertUtils.dp2px(22f)+ConvertUtils.sp2px(22f)
         } else if (callback.isGroupFirst(position)) {
             outRect.top = topMargin
         } else {

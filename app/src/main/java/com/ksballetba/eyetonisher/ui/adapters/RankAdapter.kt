@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
@@ -21,7 +22,7 @@ class RankAdapter(val mItems: MutableList<RankListBean.Item>,val mOnClickListene
     internal var mContext: Context? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val videoItem = view.findViewById<CardView>(R.id.video_item)
+        val videoItem = view.findViewById<FrameLayout>(R.id.video_item)
         val videoItemCover = view.findViewById<ImageView>(R.id.video_item_cover)
         val videoItemAction = view.findViewById<ImageView>(R.id.video_item_action)
         val videoItemDuration = view.findViewById<TextView>(R.id.video_item_duration)

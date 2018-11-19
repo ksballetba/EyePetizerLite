@@ -39,6 +39,16 @@ fun getTopicViewModel(fragment: Fragment): TopicViewModel {
     })[TopicViewModel::class.java]
 }
 
+fun getTopicViewModel(activity: FragmentActivity): TopicViewModel {
+    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = TopicRespository()
+            @Suppress("UNCHECKED_CAST")
+            return TopicViewModel(respository) as T
+        }
+    })[TopicViewModel::class.java]
+}
+
 fun getCateViewModel(fragment: Fragment): CateViewModel {
     return ViewModelProviders.of(fragment, object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {

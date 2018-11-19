@@ -50,16 +50,16 @@ class CategoryDetailViewModel constructor(private val categoryDetailRespository:
         return result
     }
 
-    fun fetchProviderListInitial(): LiveData<MutableList<CategotyProvidersBean.Item>> {
-        val result = MutableLiveData<MutableList<CategotyProvidersBean.Item>>()
+    fun fetchProviderListInitial(): LiveData<MutableList<CategotyPlaylistBean.Item>> {
+        val result = MutableLiveData<MutableList<CategotyPlaylistBean.Item>>()
         categoryDetailRespository.fetchProviderListInitial {
             result.postValue(it)
         }
         return result
     }
 
-    fun fetchProviderListAfter(): LiveData<MutableList<CategotyProvidersBean.Item>> {
-        val result = MutableLiveData<MutableList<CategotyProvidersBean.Item>>()
+    fun fetchProviderListAfter(): LiveData<MutableList<CategotyPlaylistBean.Item>> {
+        val result = MutableLiveData<MutableList<CategotyPlaylistBean.Item>>()
         categoryDetailRespository.fetchProviderListAfter {
             result.postValue(it)
         }

@@ -39,13 +39,13 @@ class CategoryDetailRespository constructor(var id:Int): BaseRepository(){
         }
     }
 
-    fun fetchProviderListInitial(callBack:(MutableList<CategotyProvidersBean.Item>)->Unit){
+    fun fetchProviderListInitial(callBack:(MutableList<CategotyPlaylistBean.Item>)->Unit){
         mDataSource.loadProviderListInitial {
             callBack(it)
         }
     }
 
-    fun fetchProviderListAfter(callBack:(MutableList<CategotyProvidersBean.Item>)->Unit){
+    fun fetchProviderListAfter(callBack:(MutableList<CategotyPlaylistBean.Item>)->Unit){
         mDataSource.loadProviderListAfter {
             callBack(it)
         }

@@ -1,12 +1,14 @@
 package com.ksballetba.eyetonisher.ui.acitvities
 
 import android.content.Intent
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
@@ -31,11 +33,13 @@ class MainActivity : AppCompatActivity() {
     lateinit var mHomeFragment: HomeFragment
     lateinit var mExplorerFragment: ExplorerFragment
     lateinit var mHotFragment: HotFragment
-    val mFragmentList =  ArrayList<Fragment>()
+    val mFragmentList = ArrayList<Fragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+        window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+        window.statusBarColor = ContextCompat.getColor(this,R.color.colorPrimary)
         if (intent.flags and Intent.FLAG_ACTIVITY_BROUGHT_TO_FRONT != 0) {
             finish()
             return
@@ -45,22 +49,22 @@ class MainActivity : AppCompatActivity() {
         initUiKit()
     }
 
-    private fun initUiKit(){
+    private fun initUiKit() {
         setSupportActionBar(main_toolbar)
         supportActionBar?.title = "首页"
         main_bnv.setOnNavigationItemSelectedListener {
-            when(it.itemId){
-                R.id.menu_home->{
+            when (it.itemId) {
+                R.id.menu_home -> {
                     supportActionBar?.title = "首页"
                     main_viewpager.currentItem = 0
                     rank_tablayout.visibility = View.GONE
                 }
-                R.id.menu_hot->{
+                R.id.menu_hot -> {
                     supportActionBar?.title = "热门"
                     main_viewpager.currentItem = 1
                     rank_tablayout.visibility = View.VISIBLE
                 }
-                R.id.menu_explorer->{
+                R.id.menu_explorer -> {
                     supportActionBar?.title = "发现"
                     main_viewpager.currentItem = 2
                     rank_tablayout.visibility = View.GONE
@@ -71,7 +75,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun initFragment(){
+    private fun initFragment() {
         mHomeFragment = HomeFragment()
         mHotFragment = HotFragment()
         mExplorerFragment = ExplorerFragment()
@@ -83,8 +87,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
-            android.R.id.home->{
+        when (item?.itemId) {
+            android.R.id.home -> {
                 drawer_layout.openDrawer(GravityCompat.START)
             }
         }

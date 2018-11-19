@@ -78,6 +78,6 @@ interface ApiService{
     fun getCategoryPlaylist(@Query("id") id:Int,@Query("start") start:Int,@Query("num") num:Int):Observable<CategotyPlaylistBean>
 
     @GET("v4/categories/detail/pgcs")
-    fun getCategoryProviders(@Query("id") id:Int,@Query("start") start:Int,@Query("num") num:Int):Observable<CategotyProvidersBean>
+    fun getCategoryProviders(@Query("id") id:Int,@Query("start") start:Int,@Query("num") num:Int):Observable<CategotyPlaylistBean>
 
 }

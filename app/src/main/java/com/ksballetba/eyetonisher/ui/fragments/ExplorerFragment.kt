@@ -63,7 +63,7 @@ class ExplorerFragment : Fragment() {
             topicAdapter.update(it.subList(0,5))
         })
         alltopic_action.setOnClickListener {
-            navigateToMore("topic")
+            navigateToMore("topiclist")
         }
     }
 
@@ -73,6 +73,7 @@ class ExplorerFragment : Fragment() {
         val cateAdapter = CateAdapter(cateList){
             navigateToCategoryDetail(cateList[it].data.id,cateList[it].data.title)
         }
+
         val layoutManager = GridLayoutManager(context,2)
         layoutManager.orientation = RecyclerView.HORIZONTAL
         category_rec.layoutManager = layoutManager
@@ -84,7 +85,7 @@ class ExplorerFragment : Fragment() {
             cateAdapter.update(cateList)
         })
         allcategory_action.setOnClickListener {
-            navigateToMore("cate")
+            navigateToMore("catelist")
         }
     }
 
@@ -112,7 +113,7 @@ class ExplorerFragment : Fragment() {
             recoAdapter.update(recoList)
         })
         allreco_action.setOnClickListener {
-            navigateToMore("reco")
+            navigateToMore("recolist")
         }
     }
 

@@ -64,7 +64,6 @@ class HomeFragment : Fragment() {
             }
         }
         mHomeAdapter = HomeAdapter(mHomeList,itemOnClickListener)
-
         val animationAdapter = ScaleInAnimationAdapter(mHomeAdapter)
         animationAdapter.setFirstOnly(false)
         home_rec.adapter = animationAdapter
@@ -89,7 +88,7 @@ class HomeFragment : Fragment() {
                 }
             }
         })
-        loadInitial()
+        home_refresh.autoRefresh()
         home_refresh.setOnRefreshListener {
             loadInitial()
         }

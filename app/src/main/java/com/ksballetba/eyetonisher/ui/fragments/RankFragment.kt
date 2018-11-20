@@ -82,7 +82,7 @@ class RankFragment: Fragment() {
         mViewModel.fetchLoadStatus().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.RUNNING -> {
-                    rank_refresh.autoRefresh()
+//                    rank_refresh.autoRefresh()
                 }
                 Status.SUCCESS -> {
                     rank_refresh.finishRefresh()
@@ -92,7 +92,7 @@ class RankFragment: Fragment() {
                 }
             }
         })
-        loadInitial()
+        rank_refresh.autoRefresh()
         rank_refresh.setOnRefreshListener {
             loadInitial()
         }

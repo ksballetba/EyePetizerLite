@@ -24,7 +24,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ui.acitvities.TopicActivity" />
         <activity android:name=".ui.acitvities.CategoryActivity" />
-        <activity android:name=".ui.acitvities.MoreActivity"></activity>
+        <activity android:name=".ui.acitvities.MoreActivity" />
     </application>
 
 </manifest>

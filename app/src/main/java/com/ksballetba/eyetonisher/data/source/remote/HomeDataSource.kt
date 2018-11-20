@@ -66,15 +66,17 @@ class HomeDataSource {
     }
 
     fun loadRecoInitial(callBack: (MutableList<HomeListBean.Item>) -> Unit) {
+        mLoadStatus.postValue(NetworkState.LOADING)
         val disposable = RetrofitClient.instance
                 .create(ApiService::class.java)
-                .getRecoList(0)
+                .getRecoList(0,RetrofitClient.uid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
                             callBack(it.itemList.toMutableList())
                             mRecoPage = 1
+                            mLoadStatus.postValue(NetworkState.LOADED)
                         },
                         onComplete = {
                             println("Completed")
@@ -89,15 +91,17 @@ class HomeDataSource {
 
 
     fun loadRecoAfter(callBack: (MutableList<HomeListBean.Item>) -> Unit) {
+        mLoadStatus.postValue(NetworkState.LOADING)
         val disposable = RetrofitClient.instance
                 .create(ApiService::class.java)
-                .getRecoList(mRecoPage)
+                .getRecoList(mRecoPage,RetrofitClient.uid)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                         onNext = {
                             callBack(it.itemList.toMutableList())
                             mRecoPage++
+                            mLoadStatus.postValue(NetworkState.LOADED)
                         },
                         onComplete = {
                             println("Completed")

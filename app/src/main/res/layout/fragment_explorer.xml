@@ -51,7 +51,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_keyboard_arrow_right_blue_400_24dp" />
+                    android:src="@drawable/ic_keyboard_arrow_right_cyan_500_24dp" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -104,7 +104,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_keyboard_arrow_right_blue_400_24dp" />
+                    android:src="@drawable/ic_keyboard_arrow_right_cyan_500_24dp" />
 
             </LinearLayout>
         </RelativeLayout>
@@ -160,7 +160,7 @@
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_keyboard_arrow_right_blue_400_24dp" />
+                    android:src="@drawable/ic_keyboard_arrow_right_cyan_500_24dp" />
 
             </LinearLayout>
         </RelativeLayout>

@@ -8,7 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="popupMenuStyle">@style/MyPopupMenu</item>
         <!-- 设置statusBarColor 为透明-->
-        <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
     <style name="MyPopupMenu" parent="@style/Widget.AppCompat.PopupMenu">

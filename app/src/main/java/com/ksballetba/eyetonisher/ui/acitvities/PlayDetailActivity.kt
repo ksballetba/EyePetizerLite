@@ -100,8 +100,6 @@ class PlayDetailActivity : GSYBaseActivityDetail<StandardGSYVideoPlayer>() {
         })
     }
 
-
-
     private fun initCommentRec(){
         var commentList = mutableListOf<RepliesBean.Item>()
         val layoutManager = LinearLayoutManager(this)

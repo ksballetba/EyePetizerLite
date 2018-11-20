@@ -29,6 +29,16 @@ fun getHomeViewModel(fragment: Fragment): HomeViewModel {
     })[HomeViewModel::class.java]
 }
 
+fun getHomeViewModel(activity: FragmentActivity): HomeViewModel {
+    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = HomeRespository()
+            @Suppress("UNCHECKED_CAST")
+            return HomeViewModel(respository) as T
+        }
+    })[HomeViewModel::class.java]
+}
+
 fun getTopicViewModel(fragment: Fragment): TopicViewModel {
     return ViewModelProviders.of(fragment, object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -51,6 +61,16 @@ fun getTopicViewModel(activity: FragmentActivity): TopicViewModel {
 
 fun getCateViewModel(fragment: Fragment): CateViewModel {
     return ViewModelProviders.of(fragment, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = CateRespository()
+            @Suppress("UNCHECKED_CAST")
+            return CateViewModel(respository) as T
+        }
+    })[CateViewModel::class.java]
+}
+
+fun getCateViewModel(activity: FragmentActivity): CateViewModel {
+    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             val respository = CateRespository()
             @Suppress("UNCHECKED_CAST")

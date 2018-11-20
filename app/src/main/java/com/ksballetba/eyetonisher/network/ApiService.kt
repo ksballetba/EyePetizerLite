@@ -17,7 +17,7 @@ import retrofit2.http.Query
 // 全部分类
 //http://baobab.kaiyanapp.com/api/v4/categories/all
 // 猜你喜欢
-//http://baobab.kaiyanapp.com/api/v5/index/tab/rec?page=0
+//http://baobab.kaiyanapp.com/api/v5/index/tab/rec?page=0&udid=0e03d29034f5474f981d27cded1b2b65c8316d11
 // 分类详情(首页)
 //http://baobab.kaiyanapp.com/api/v4/categories/detail/index?id=24&udid=0e03d29034f5474f981d27cded1b2b65c8316d11
 // 分类详情(全部)
@@ -57,7 +57,7 @@ interface ApiService{
     fun getCateList():Observable<CateListBean>
 
     @GET("v5/index/tab/rec")
-    fun getRecoList(@Query("page") page:Int):Observable<HomeListBean>
+    fun getRecoList(@Query("page") page:Int,@Query("udid") udid:String):Observable<HomeListBean>
 
     @GET("v4/video/related")
     fun getRelatedList(@Query("id") id:Int,@Query("vc") vc:Int,@Query("deviceModel") deviceModel:String):Observable<RelatedVideoBean>

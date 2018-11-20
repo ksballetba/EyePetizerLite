@@ -18,6 +18,7 @@ import com.ksballetba.eyetonisher.data.bean.CateListBean
 import com.ksballetba.eyetonisher.data.bean.HomeListBean
 import com.ksballetba.eyetonisher.data.bean.TopicListBean
 import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
+import com.ksballetba.eyetonisher.ui.acitvities.MoreActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.CateAdapter
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
@@ -29,17 +30,7 @@ import com.ksballetba.eyetonisher.utilities.getTopicViewModel
 import com.ksballetba.eyetonisher.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.fragment_explorer.*
 
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- *
- */
 class ExplorerFragment : Fragment() {
-
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -47,8 +38,8 @@ class ExplorerFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_explorer, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewCreated(view: View,savedInstanceState: Bundle?) {
+        super.onViewCreated(view,savedInstanceState)
         initBanner()
         initCategory()
         initReco()
@@ -71,6 +62,9 @@ class ExplorerFragment : Fragment() {
             topicList.addAll(it.subList(0,5))
             topicAdapter.update(it.subList(0,5))
         })
+        alltopic_action.setOnClickListener {
+            navigateToMore("topic")
+        }
     }
 
     private fun initCategory(){
@@ -89,6 +83,9 @@ class ExplorerFragment : Fragment() {
             }.toMutableList()
             cateAdapter.update(cateList)
         })
+        allcategory_action.setOnClickListener {
+            navigateToMore("cate")
+        }
     }
 
     private fun initReco(){
@@ -114,6 +111,9 @@ class ExplorerFragment : Fragment() {
             recoList = it.subList(0,5)
             recoAdapter.update(recoList)
         })
+        allreco_action.setOnClickListener {
+            navigateToMore("reco")
+        }
     }
 
     private fun navigateToCategoryDetail(id:Int,title:String){
@@ -129,6 +129,12 @@ class ExplorerFragment : Fragment() {
         intent.putExtra("video_id",videoId)
         intent.putExtra("video_title",videoTitle)
         intent.putExtra("video_thumb",videoThumb)
+        startActivity(intent)
+    }
+
+    private fun navigateToMore(initType:String){
+        val intent = Intent(activity,MoreActivity::class.java)
+        intent.putExtra("init_type",initType)
         startActivity(intent)
     }
 

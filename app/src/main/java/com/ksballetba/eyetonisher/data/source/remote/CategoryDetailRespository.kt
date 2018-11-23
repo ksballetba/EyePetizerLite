@@ -3,7 +3,6 @@ package com.ksballetba.eyetonisher.data.source.remote
 import com.ksballetba.eyetonisher.base.BaseRepository
 import com.ksballetba.eyetonisher.data.bean.CategoryHomeListBean
 import com.ksballetba.eyetonisher.data.bean.CategotyPlaylistBean
-import com.ksballetba.eyetonisher.data.bean.CategotyProvidersBean
 import com.ksballetba.eyetonisher.data.bean.RankListBean
 
 class CategoryDetailRespository constructor(var id:Int): BaseRepository(){

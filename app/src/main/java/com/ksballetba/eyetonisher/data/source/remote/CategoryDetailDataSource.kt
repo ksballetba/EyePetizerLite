@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.ksballetba.eyetonisher.data.bean.CategoryHomeListBean
 import com.ksballetba.eyetonisher.data.bean.CategotyPlaylistBean
-import com.ksballetba.eyetonisher.data.bean.CategotyProvidersBean
 import com.ksballetba.eyetonisher.data.bean.RankListBean
 import com.ksballetba.eyetonisher.network.ApiService
 import com.ksballetba.eyetonisher.network.NetworkState

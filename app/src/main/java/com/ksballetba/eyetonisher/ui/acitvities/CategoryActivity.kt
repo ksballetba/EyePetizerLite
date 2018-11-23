@@ -34,7 +34,59 @@ class CategoryActivity : AppCompatActivity() {
         supportActionBar?.title = ""
         category_title.text = intent.getStringExtra("category_title")
         category_coll_title.text = intent.getStringExtra("category_title")
-        category_slogan.text = "优雅的行走在潮流尖端"
+        when(intent.getStringExtra("category_title")){
+            "#时尚"->{
+                category_slogan.text = "优雅地行走在潮流尖端"
+            }
+            "#运动"->{
+                category_slogan.text = "冲浪、滑板、跑酷、骑行，生命停不下来"
+            }
+            "#创意"->{
+                category_slogan.text = "技术与审美结合，探索视觉的无限可能"
+            }
+            "#广告"->{
+                category_slogan.text = "为广告人的精彩创意点赞"
+            }
+            "#音乐"->{
+                category_slogan.text = "汇聚全球最新、最优质的音乐视频"
+            }
+            "#记录"->{
+                category_slogan.text = "告诉他们为什么与众不同"
+            }
+            "#开胃"->{
+                category_slogan.text = "眼球和味蕾，一个都不放过"
+            }
+            "#游戏"->{
+                category_slogan.text = "欢迎来到惊险刺激的新世界"
+            }
+            "#萌宠"->{
+                category_slogan.text = "来自汪星，喵星，蠢萌星的你"
+            }
+            "#动画"->{
+                category_slogan.text = "有趣的人永远不缺童心"
+            }
+            "#科技"->{
+                category_slogan.text = "每天获得新知识"
+            }
+            "#剧情"->{
+                category_slogan.text = "用一个好故事，描绘生活的不可思议"
+            }
+            "#搞笑"->{
+                category_slogan.text = "哈哈哈哈哈哈哈哈哈"
+            }
+            "#影视"->{
+                category_slogan.text = "电影、剧集、戏剧抢先看"
+            }
+            "#综艺"->{
+                category_slogan.text = "全球网红在表演什么"
+            }
+            "#生活"->{
+                category_slogan.text = "匠心、健康、生活感悟"
+            }
+            "#旅行"->{
+                category_slogan.text = "发现世界的奇妙和辽阔"
+            }
+        }
         category_appbarlayout.addOnOffsetChangedListener(AppBarStateChangeListener{appBarLayout, state ->
             when(state){
                 AppBarStateChangeListener.State.COLLAPSED->{

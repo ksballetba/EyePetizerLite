@@ -60,6 +60,23 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+        nav_view.setNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.nav_favorite->{
+                    navigationToFavAndDownload("fav")
+                }
+                R.id.nav_dowmload->{
+
+                }
+                R.id.nav_history->{
+
+                }
+                R.id.nav_comments->{
+
+                }
+            }
+            true
+        }
     }
 
     private fun initFragment() {
@@ -73,11 +90,16 @@ class MainActivity : AppCompatActivity() {
         main_viewpager.adapter = ViewPagerAdapter(mFragmentList, supportFragmentManager)
     }
 
+    private fun navigationToFavAndDownload(initType:String){
+        val intent = Intent(this,FavAndDownloadActivity::class.java)
+        intent.putExtra("init_type",initType)
+        startActivity(intent)
+    }
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
                 drawer_layout.openDrawer(GravityCompat.START)
-
             }
         }
         return super.onOptionsItemSelected(item)

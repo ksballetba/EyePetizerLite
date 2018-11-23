@@ -4,7 +4,12 @@ import android.content.res.Resources
 import android.util.TypedValue
 import android.widget.LinearLayout
 import com.google.android.material.tabs.TabLayout
+import com.ksballetba.eyetonisher.data.bean.FavVideoBean
+import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import java.lang.reflect.Field
+import java.util.concurrent.Executors
+
+private val IO_EXECUTOR = Executors.newSingleThreadExecutor()
 
 fun parseDuration(duration:Int):String{
     val min = duration/60
@@ -38,4 +43,26 @@ fun setTabWidth(tabs: TabLayout, leftDip:Float, rightDip:Float){
             e.printStackTrace()
         }
     }
+}
+
+fun runOnIoThread(f: () -> Unit) {
+    IO_EXECUTOR.execute(f)
+}
+
+fun createFavVideo(videoInfo:VideoInfoBean):FavVideoBean{
+    val favVideo = FavVideoBean(
+            videoInfo.id,
+            videoInfo.cover.detail,
+            videoInfo.author.icon,
+            videoInfo.author.name,
+            videoInfo.title,
+            videoInfo.category,
+            videoInfo.duration,
+            videoInfo.playUrl,
+            videoInfo.description,
+            videoInfo.consumption.collectionCount,
+            videoInfo.consumption.replyCount,
+            videoInfo.slogan
+            )
+    return favVideo
 }

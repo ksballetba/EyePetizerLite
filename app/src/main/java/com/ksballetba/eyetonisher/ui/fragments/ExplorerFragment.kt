@@ -20,6 +20,7 @@ import com.ksballetba.eyetonisher.data.bean.TopicListBean
 import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
 import com.ksballetba.eyetonisher.ui.acitvities.MoreActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
+import com.ksballetba.eyetonisher.ui.acitvities.TopicActivity
 import com.ksballetba.eyetonisher.ui.adapters.CateAdapter
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.TopicAdapter
@@ -49,7 +50,7 @@ class ExplorerFragment : Fragment() {
         val topicList = mutableListOf<TopicListBean.Item>()
         val topicViewModel = getTopicViewModel(this)
         val  topicAdapter = TopicAdapter(topicList){
-
+            navigateToTopic(topicList[it].data.id)
         }
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.HORIZONTAL
@@ -136,6 +137,12 @@ class ExplorerFragment : Fragment() {
     private fun navigateToMore(initType:String){
         val intent = Intent(activity,MoreActivity::class.java)
         intent.putExtra("init_type",initType)
+        startActivity(intent)
+    }
+
+    private fun navigateToTopic(id:Int){
+        val intent = Intent(activity,TopicActivity::class.java)
+        intent.putExtra("topic_id",id)
         startActivity(intent)
     }
 

@@ -23,6 +23,7 @@ import com.ksballetba.eyetonisher.data.bean.*
 import com.ksballetba.eyetonisher.network.Status
 import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
+import com.ksballetba.eyetonisher.ui.acitvities.TopicActivity
 import com.ksballetba.eyetonisher.ui.adapters.*
 import com.ksballetba.eyetonisher.ui.widgets.CategoryAdapterItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
@@ -49,17 +50,15 @@ import org.jetbrains.anko.toast
 class CategoryDetailFragment : Fragment() {
 
     lateinit var mViewModel: CategoryDetailViewModel
-    lateinit var mTopicViewModel: TopicViewModel
     var mHotVideoList = mutableListOf<CategoryHomeListBean.Item>()
     var mAllVideoList = mutableListOf<RankListBean.Item>()
     var mPlayList = mutableListOf<CategotyPlaylistBean.Item>()
     var mProviderList = mutableListOf<CategotyPlaylistBean.Item>()
-    var mTopicList = mutableListOf<TopicListBean.Item>()
     lateinit var mHotAdapter: CategoryHotAdapter
     lateinit var mAllAdapter: RankAdapter
     lateinit var mPlaylistAdapter: CategoryPlaylistAdapter
     lateinit var mProvidersAdapter: CategoryPlaylistAdapter
-    lateinit var mTopicAdapter: TopicAdapter
+    var hasBg = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -141,9 +140,11 @@ class CategoryDetailFragment : Fragment() {
                     it.type == "video"
                 }.toMutableList()
                 mHotAdapter.update(mHotVideoList)
-                val topicBg = activity?.findViewById<ImageView>(R.id.category_bg)
-                val options = RequestOptions().placeholder(R.color.icons).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-                Glide.with(context).load(mHotVideoList[3].data.cover.detail).apply(options).transition(DrawableTransitionOptions.withCrossFade(500)).into(topicBg)
+                if(!hasBg){
+                    val topicBg = activity?.findViewById<ImageView>(R.id.category_bg)
+                    Glide.with(context).load(mHotVideoList[3].data.cover.detail).transition(DrawableTransitionOptions.withCrossFade(500)).into(topicBg)
+                    hasBg = true
+                }
             })
         }
     }
@@ -205,7 +206,6 @@ class CategoryDetailFragment : Fragment() {
             override fun onDetailClick(idx: Int) {
 
             }
-
             override fun onActionClick(idx: Int) {
 
             }
@@ -297,19 +297,20 @@ class CategoryDetailFragment : Fragment() {
     }
 
     private fun initTopicRec() {
-        mTopicViewModel = getTopicViewModel(this)
-        val layoutManager = LinearLayoutManager(context)
+        val topicList = mutableListOf<TopicListBean.Item>()
+        val topicViewModel = getTopicViewModel(this)
+        val layoutManager = LinearLayoutManager(context!!)
         layoutManager.orientation = RecyclerView.VERTICAL
-        mTopicAdapter = TopicAdapter(mTopicList) {
-
+        val topicAdapter = TopicAdapter(topicList) {
+            navigateToTopic(topicList[it].data.id)
         }
         category_detail_rec.layoutManager = layoutManager
-        category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f, 0f, context!!))
-        val animationAdapter = ScaleInAnimationAdapter(mTopicAdapter)
-        animationAdapter.setFirstOnly(false)
+        val animationAdapter = ScaleInAnimationAdapter(topicAdapter)
         category_detail_rec.adapter = animationAdapter
-        mTopicViewModel.fetchLoadStatus().observe(viewLifecycleOwner, Observer {
+        animationAdapter.setFirstOnly(false)
+        category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
+        topicViewModel.fetchLoadStatus().observe(viewLifecycleOwner, Observer {
             when (it.status) {
                 Status.RUNNING -> {
 //                    category_detail_refresh.autoRefresh()
@@ -322,21 +323,17 @@ class CategoryDetailFragment : Fragment() {
                 }
             }
         })
-
-        mTopicViewModel.fetchData().observe(viewLifecycleOwner, Observer {
-            mTopicAdapter.update(it)
-            mTopicList = it.toMutableList()
-        })
+        category_detail_refresh.autoRefresh()
         category_detail_refresh.setOnRefreshListener {
-            mTopicViewModel.fetchData().observe(viewLifecycleOwner, Observer {
-                mTopicAdapter.update(it)
-                mTopicList = it.toMutableList()
+            topicViewModel.fetchData().observe(viewLifecycleOwner, Observer {
+                topicList.addAll(it)
+                topicAdapter.update(it)
             })
         }
         category_detail_refresh.setOnLoadMoreListener {
-            mTopicViewModel.fetchDataAfter().observe(viewLifecycleOwner, Observer {
-                mTopicAdapter.add(it)
-                mTopicList.addAll(it)
+            topicViewModel.fetchDataAfter().observe(viewLifecycleOwner, Observer {
+                topicList.addAll(it)
+                topicAdapter.add(it)
                 category_detail_refresh.finishLoadMore()
             })
         }
@@ -359,8 +356,8 @@ class CategoryDetailFragment : Fragment() {
         category_detail_rec.adapter = animationAdapter
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         cateViewModel.fetchData().observe(viewLifecycleOwner, Observer {
-            cateList.addAll(it)
-            cateAdapter.update(it)
+            cateList.addAll(it.subList(3,it.size))
+            cateAdapter.update(it.subList(3,it.size))
         })
     }
 
@@ -398,10 +395,7 @@ class CategoryDetailFragment : Fragment() {
                 }
             }
         })
-        recoViewModel.fetchRecoData().observe(viewLifecycleOwner, Observer {
-            recoList.addAll(it)
-            recoAdapter.update(it)
-        })
+        category_detail_refresh.autoRefresh()
         category_detail_refresh.setOnRefreshListener {
             recoViewModel.fetchRecoData().observe(viewLifecycleOwner, Observer {
                 recoList.addAll(it)
@@ -431,6 +425,12 @@ class CategoryDetailFragment : Fragment() {
         intent.putExtra("video_id", videoId)
         intent.putExtra("video_title", videoTitle)
         intent.putExtra("video_thumb", videoThumb)
+        startActivity(intent)
+    }
+
+    private fun navigateToTopic(id:Int){
+        val intent = Intent(activity, TopicActivity::class.java)
+        intent.putExtra("topic_id",id)
         startActivity(intent)
     }
 

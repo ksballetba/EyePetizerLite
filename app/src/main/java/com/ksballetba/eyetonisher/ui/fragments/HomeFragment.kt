@@ -3,6 +3,7 @@ package com.ksballetba.eyetonisher.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -21,7 +22,10 @@ import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.HeaderItemDecoration
+import com.ksballetba.eyetonisher.utilities.createFavVideo
+import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
 import com.ksballetba.eyetonisher.utilities.getHomeViewModel
+import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.HomeViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
@@ -36,6 +40,7 @@ import org.jetbrains.anko.toast
 class HomeFragment : Fragment() {
 
     private lateinit var mViewModel: HomeViewModel
+    private lateinit var mDBViewModel: FavVideoViewModel
     var mHomeList = mutableListOf<HomeListBean.Item>()
     private lateinit var mHomeAdapter: HomeAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +57,7 @@ class HomeFragment : Fragment() {
 
     private fun initRec() {
         mViewModel = getHomeViewModel(this)
+        mDBViewModel = getFavVideoViewModel(this)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
         home_rec.layoutManager = layoutManager
@@ -60,7 +66,7 @@ class HomeFragment : Fragment() {
                 navigateToPlayDetail(mHomeList[idx].data.header.id,mHomeList[idx].data.content.data.playUrl,mHomeList[idx].data.content.data.title,mHomeList[idx].data.content.data.cover.detail)
             }
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mHomeList[idx])
             }
         }
         mHomeAdapter = HomeAdapter(mHomeList,itemOnClickListener)
@@ -106,17 +112,22 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun showPopMenu(view: View){
+    private fun showPopMenu(view: View,video:HomeListBean.Item){
         val popupMenu = PopupMenu(context,view,Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.action_fav->{
-
+                    mDBViewModel.insertVideo(createFavVideo(video.data.content.data))
+//                    Log.d("debug",video.data.content.data.toString())
                 }
                 R.id.action_download->{
-
+                    mDBViewModel.getVideos().observe(viewLifecycleOwner, Observer {
+                        it.forEach {
+                            Log.d("debug",it.title)
+                        }
+                    })
                 }
             }
             true

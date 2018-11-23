@@ -42,4 +42,5 @@ class HomeViewModel constructor(private var homeRespository: HomeRespository):Ba
     fun fetchLoadStatus() = homeRespository.getLoadDataStatus()
 
     fun getNextPageUrl() = homeRespository.getNextPageUrl()
+
 }

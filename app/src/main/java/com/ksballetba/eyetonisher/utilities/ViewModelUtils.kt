@@ -1,11 +1,12 @@
 package com.ksballetba.eyetonisher.utilities
 
-import android.app.Activity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.ksballetba.eyetonisher.data.source.local.FavVideoDao
+import com.ksballetba.eyetonisher.data.source.local.FavVideoRepository
 import com.ksballetba.eyetonisher.data.source.remote.*
 import com.ksballetba.eyetonisher.viewmodel.*
 
@@ -29,28 +30,9 @@ fun getHomeViewModel(fragment: Fragment): HomeViewModel {
     })[HomeViewModel::class.java]
 }
 
-fun getHomeViewModel(activity: FragmentActivity): HomeViewModel {
-    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val respository = HomeRespository()
-            @Suppress("UNCHECKED_CAST")
-            return HomeViewModel(respository) as T
-        }
-    })[HomeViewModel::class.java]
-}
 
 fun getTopicViewModel(fragment: Fragment): TopicViewModel {
     return ViewModelProviders.of(fragment, object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val respository = TopicRespository()
-            @Suppress("UNCHECKED_CAST")
-            return TopicViewModel(respository) as T
-        }
-    })[TopicViewModel::class.java]
-}
-
-fun getTopicViewModel(activity: FragmentActivity): TopicViewModel {
-    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
             val respository = TopicRespository()
             @Suppress("UNCHECKED_CAST")
@@ -69,15 +51,6 @@ fun getCateViewModel(fragment: Fragment): CateViewModel {
     })[CateViewModel::class.java]
 }
 
-fun getCateViewModel(activity: FragmentActivity): CateViewModel {
-    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val respository = CateRespository()
-            @Suppress("UNCHECKED_CAST")
-            return CateViewModel(respository) as T
-        }
-    })[CateViewModel::class.java]
-}
 
 fun getVideoDetailViewModel(activity: FragmentActivity,videoId:Int): VideoDetailViewModel {
     return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
@@ -99,3 +72,36 @@ fun getCategoryDeatilViewModel(fragment: Fragment,id:Int): CategoryDetailViewMod
         }
     })[CategoryDetailViewModel::class.java]
 }
+
+fun getTopicDetailViewModel(activity: FragmentActivity,id:Int): TopicDetailViewModel {
+    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = TopicDetailRespository(id)
+            @Suppress("UNCHECKED_CAST")
+            return TopicDetailViewModel(respository) as T
+        }
+    })[TopicDetailViewModel::class.java]
+}
+
+fun getFavVideoViewModel(activity: FragmentActivity): FavVideoViewModel {
+    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = FavVideoRepository(FavVideoDao())
+            @Suppress("UNCHECKED_CAST")
+            return FavVideoViewModel(respository) as T
+        }
+    })[FavVideoViewModel::class.java]
+}
+
+fun getFavVideoViewModel(fragment: Fragment): FavVideoViewModel {
+    return ViewModelProviders.of(fragment, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = FavVideoRepository(FavVideoDao())
+            @Suppress("UNCHECKED_CAST")
+            return FavVideoViewModel(respository) as T
+        }
+    })[FavVideoViewModel::class.java]
+}
+
+
+

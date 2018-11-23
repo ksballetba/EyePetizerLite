@@ -34,7 +34,7 @@ class TopicAdapter(val mItems: MutableList<TopicListBean.Item>, internal val did
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         fun bind(model: TopicListBean.Item) {
             val options = RequestOptions().placeholder(R.color.icons).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
-            Glide.with(mContext!!).load(model.data.image).apply(options).transition(DrawableTransitionOptions.withCrossFade(1000)).into(holder.topicItemCover)
+            Glide.with(mContext!!).load(model.data.image).apply(options).transition(DrawableTransitionOptions.withCrossFade(500)).into(holder.topicItemCover)
             with(holder.topicItem) {
                 setOnClickListener {
                     didSelectedAtPos(position)

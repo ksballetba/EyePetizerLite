@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import com.ksballetba.eyetonisher.base.BaseViewModel
 import com.ksballetba.eyetonisher.data.bean.CategoryHomeListBean
 import com.ksballetba.eyetonisher.data.bean.CategotyPlaylistBean
-import com.ksballetba.eyetonisher.data.bean.CategotyProvidersBean
 import com.ksballetba.eyetonisher.data.bean.RankListBean
 import com.ksballetba.eyetonisher.data.source.remote.CategoryDetailRespository
 

@@ -80,4 +80,7 @@ interface ApiService{
     @GET("v4/categories/detail/pgcs")
     fun getCategoryProviders(@Query("id") id:Int,@Query("start") start:Int,@Query("num") num:Int):Observable<CategotyPlaylistBean>
 
+    @GET("v3/lightTopics/internal/{id}")
+    fun getTopicDeatail(@Path("id") id:Int):Observable<TopicInfoBean>
+
 }

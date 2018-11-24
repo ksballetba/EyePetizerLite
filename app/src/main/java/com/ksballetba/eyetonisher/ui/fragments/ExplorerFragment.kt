@@ -17,6 +17,7 @@ import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.CateListBean
 import com.ksballetba.eyetonisher.data.bean.HomeListBean
 import com.ksballetba.eyetonisher.data.bean.TopicListBean
+import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
 import com.ksballetba.eyetonisher.ui.acitvities.MoreActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
@@ -25,13 +26,14 @@ import com.ksballetba.eyetonisher.ui.adapters.CateAdapter
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.TopicAdapter
 import com.ksballetba.eyetonisher.ui.widgets.BannerItemDecoration
-import com.ksballetba.eyetonisher.utilities.getCateViewModel
-import com.ksballetba.eyetonisher.utilities.getHomeViewModel
-import com.ksballetba.eyetonisher.utilities.getTopicViewModel
+import com.ksballetba.eyetonisher.utilities.*
+import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.fragment_explorer.*
 
 class ExplorerFragment : Fragment() {
+
+    private lateinit var mDBViewModel: FavVideoViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,6 +93,7 @@ class ExplorerFragment : Fragment() {
     }
 
     private fun initReco(){
+        mDBViewModel = getFavVideoViewModel(this)
         var recoList = mutableListOf<HomeListBean.Item>()
         val recoViewModel = getHomeViewModel(this)
         val layoutManager = LinearLayoutManager(context)
@@ -101,7 +104,7 @@ class ExplorerFragment : Fragment() {
                 navigateToPlayDetail(recoList[idx].data.header.id,recoList[idx].data.content.data.playUrl,recoList[idx].data.content.data.title,recoList[idx].data.content.data.cover.detail)
             }
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),recoList[idx].data.content.data)
             }
         }
         val recoAdapter = HomeAdapter(recoList,itemOnClickListener)
@@ -145,15 +148,14 @@ class ExplorerFragment : Fragment() {
         intent.putExtra("topic_id",id)
         startActivity(intent)
     }
-
-    private fun showPopMenu(view: View){
-        val popupMenu = PopupMenu(context,view, Gravity.END)
+    private fun showPopMenu(view: View,video: VideoInfoBean){
+        val popupMenu = PopupMenu(context,view,Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.action_fav->{
-
+                    mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
 

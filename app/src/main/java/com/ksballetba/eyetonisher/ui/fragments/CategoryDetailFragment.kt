@@ -27,11 +27,9 @@ import com.ksballetba.eyetonisher.ui.acitvities.TopicActivity
 import com.ksballetba.eyetonisher.ui.adapters.*
 import com.ksballetba.eyetonisher.ui.widgets.CategoryAdapterItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
-import com.ksballetba.eyetonisher.utilities.getCateViewModel
-import com.ksballetba.eyetonisher.utilities.getCategoryDeatilViewModel
-import com.ksballetba.eyetonisher.utilities.getHomeViewModel
-import com.ksballetba.eyetonisher.utilities.getTopicViewModel
+import com.ksballetba.eyetonisher.utilities.*
 import com.ksballetba.eyetonisher.viewmodel.CategoryDetailViewModel
+import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.TopicViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
@@ -50,6 +48,7 @@ import org.jetbrains.anko.toast
 class CategoryDetailFragment : Fragment() {
 
     lateinit var mViewModel: CategoryDetailViewModel
+    private lateinit var mDBViewModel: FavVideoViewModel
     var mHotVideoList = mutableListOf<CategoryHomeListBean.Item>()
     var mAllVideoList = mutableListOf<RankListBean.Item>()
     var mPlayList = mutableListOf<CategotyPlaylistBean.Item>()
@@ -74,6 +73,7 @@ class CategoryDetailFragment : Fragment() {
         val id = activity?.intent?.getIntExtra("category_id", 0)
         val type = (arguments as Bundle).getString("init_type", "")
         initRefresh()
+        mDBViewModel = getFavVideoViewModel(this)
         when (type) {
             "hotvideolist" -> {
                 initHotRec(id!!)
@@ -110,7 +110,7 @@ class CategoryDetailFragment : Fragment() {
             }
 
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mHotVideoList[idx].data)
             }
         }
         mHotAdapter = CategoryHotAdapter(mHotVideoList, itemOnClickListener)
@@ -159,7 +159,7 @@ class CategoryDetailFragment : Fragment() {
             }
 
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mAllVideoList[idx].data)
             }
         }
         mAllAdapter = RankAdapter(mAllVideoList, itemOnClickListener)
@@ -210,7 +210,7 @@ class CategoryDetailFragment : Fragment() {
 
             }
         }
-        mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener)
+        mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener,mDBViewModel)
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f, 0f, context!!))
@@ -260,7 +260,7 @@ class CategoryDetailFragment : Fragment() {
 
             }
         }
-        mProvidersAdapter = CategoryPlaylistAdapter(mProviderList, itemOnClickListener)
+        mProvidersAdapter = CategoryPlaylistAdapter(mProviderList, itemOnClickListener,mDBViewModel)
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f, 0f, context!!))
@@ -372,7 +372,7 @@ class CategoryDetailFragment : Fragment() {
             }
 
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),recoList[idx].data.content.data)
             }
         }
         val recoAdapter = HomeAdapter(recoList, itemOnClickListener)
@@ -434,16 +434,16 @@ class CategoryDetailFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun showPopMenu(view: View) {
-        val popupMenu = PopupMenu(context, view, Gravity.END)
-        popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
+    private fun showPopMenu(view: View,video:VideoInfoBean){
+        val popupMenu = PopupMenu(context,view,Gravity.END)
+        popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                R.id.action_fav -> {
-
+            when(it.itemId){
+                R.id.action_fav->{
+                    mDBViewModel.insertVideo(createFavVideo(video))
                 }
-                R.id.action_download -> {
+                R.id.action_download->{
 
                 }
             }

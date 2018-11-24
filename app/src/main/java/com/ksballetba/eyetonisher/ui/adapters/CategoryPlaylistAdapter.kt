@@ -14,11 +14,15 @@ import com.bumptech.glide.Glide
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.CategotyPlaylistBean
 import com.ksballetba.eyetonisher.data.bean.RankListBean
+import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.widgets.BannerItemDecoration
+import com.ksballetba.eyetonisher.utilities.createFavVideo
+import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
+import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>,val mOnClickListener: HomeAdapter.ItemOnClickListener) : RecyclerView.Adapter<CategoryPlaylistAdapter.ViewHolder>() {
+class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>,val mOnClickListener: HomeAdapter.ItemOnClickListener,val mDBViewModel: FavVideoViewModel) : RecyclerView.Adapter<CategoryPlaylistAdapter.ViewHolder>() {
     internal var mContext: Context? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -51,7 +55,7 @@ class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>
                     navigateToPlayDetail(videoList[idx].data.id,videoList[idx].data.playUrl,videoList[idx].data.title,videoList[idx].data.cover.detail)
                 }
                 override fun onActionClick(idx: Int) {
-                    showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                    showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),videoList[idx].data)
                 }
             }
             val videoAdapter = CategoryPlaylistItemAdapter(videoList,itemOnClickListener)
@@ -104,14 +108,14 @@ class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>
         mContext?.startActivity(intent)
     }
 
-    private fun showPopMenu(view: View){
-        val popupMenu = PopupMenu(mContext,view, Gravity.END)
+    private fun showPopMenu(view: View,video: VideoInfoBean){
+        val popupMenu = PopupMenu(mContext,view,Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.action_fav->{
-
+                    mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
 

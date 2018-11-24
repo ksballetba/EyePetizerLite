@@ -19,14 +19,18 @@ import com.bumptech.glide.request.RequestOptions
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.HomeListBean
 import com.ksballetba.eyetonisher.data.bean.TopicInfoBean
+import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.network.Status
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.TopicDetailVideoAdapter
 import com.ksballetba.eyetonisher.ui.widgets.AppBarStateChangeListener
 import com.ksballetba.eyetonisher.ui.widgets.HeaderItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
+import com.ksballetba.eyetonisher.utilities.createFavVideo
+import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
 import com.ksballetba.eyetonisher.utilities.getHomeViewModel
 import com.ksballetba.eyetonisher.utilities.getTopicDetailViewModel
+import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.TopicDetailViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
@@ -37,6 +41,7 @@ import org.jetbrains.anko.toast
 
 class TopicActivity : AppCompatActivity() {
     private lateinit var mViewModel:TopicDetailViewModel
+    private lateinit var mDBViewModel:FavVideoViewModel
     var mList = mutableListOf<TopicInfoBean.Item>()
     private lateinit var mAdapter: TopicDetailVideoAdapter
 
@@ -72,6 +77,7 @@ class TopicActivity : AppCompatActivity() {
     private fun initRec() {
         val id = intent.getIntExtra("topic_id",0)
         mViewModel = getTopicDetailViewModel(this,id)
+        mDBViewModel = getFavVideoViewModel(this)
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = RecyclerView.VERTICAL
         topic_video_rec.layoutManager = layoutManager
@@ -80,7 +86,7 @@ class TopicActivity : AppCompatActivity() {
                 navigateToPlayDetail(mList[idx].data.header.id,mList[idx].data.content.data.playUrl,mList[idx].data.content.data.title,mList[idx].data.content.data.cover.detail)
             }
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mList[idx].data.content.data)
             }
         }
         mAdapter = TopicDetailVideoAdapter(mList,itemOnClickListener)
@@ -108,14 +114,14 @@ class TopicActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun showPopMenu(view: View){
-        val popupMenu = PopupMenu(this,view, Gravity.END)
+    private fun showPopMenu(view: View,video: VideoInfoBean){
+        val popupMenu = PopupMenu(this,view,Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.action_fav->{
-
+                    mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
 

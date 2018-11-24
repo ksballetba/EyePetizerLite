@@ -1,5 +1,6 @@
 package com.ksballetba.eyetonisher.ui.acitvities
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +15,14 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.ui.fragments.*
 import kotlinx.android.synthetic.main.main_activity.*
+import pub.devrel.easypermissions.AfterPermissionGranted
+import pub.devrel.easypermissions.EasyPermissions
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        const val PERMISSISON_CODE = 100
+    }
 
     lateinit var mHomeFragment: HomeFragment
     lateinit var mExplorerFragment: ExplorerFragment
@@ -34,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
         initFragment()
         initUiKit()
+        requestPermissions()
     }
 
     private fun initUiKit() {
@@ -96,6 +104,8 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
+
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             android.R.id.home -> {
@@ -114,6 +124,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    @AfterPermissionGranted(MainActivity.PERMISSISON_CODE)
+    private fun requestPermissions(){
+        EasyPermissions.requestPermissions(this, "需要获取权限",
+                MainActivity.PERMISSISON_CODE, Manifest.permission_group.STORAGE)
+    }
 
 }
 

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.HomeListBean
+import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.network.Status
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
@@ -66,7 +67,7 @@ class HomeFragment : Fragment() {
                 navigateToPlayDetail(mHomeList[idx].data.header.id,mHomeList[idx].data.content.data.playUrl,mHomeList[idx].data.content.data.title,mHomeList[idx].data.content.data.cover.detail)
             }
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mHomeList[idx])
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mHomeList[idx].data.content.data)
             }
         }
         mHomeAdapter = HomeAdapter(mHomeList,itemOnClickListener)
@@ -112,22 +113,17 @@ class HomeFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun showPopMenu(view: View,video:HomeListBean.Item){
+    private fun showPopMenu(view: View,video:VideoInfoBean){
         val popupMenu = PopupMenu(context,view,Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.action_fav->{
-                    mDBViewModel.insertVideo(createFavVideo(video.data.content.data))
-//                    Log.d("debug",video.data.content.data.toString())
+                    mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
-                    mDBViewModel.getVideos().observe(viewLifecycleOwner, Observer {
-                        it.forEach {
-                            Log.d("debug",it.title)
-                        }
-                    })
+
                 }
             }
             true

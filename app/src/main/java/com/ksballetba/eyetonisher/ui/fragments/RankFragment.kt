@@ -17,12 +17,16 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.RankListBean
+import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.network.Status
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.RankAdapter
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
+import com.ksballetba.eyetonisher.utilities.createFavVideo
+import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
 import com.ksballetba.eyetonisher.utilities.getRankViewModel
+import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.RankViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
@@ -40,6 +44,7 @@ private const val ARG_PARAM2 = "param2"
 class RankFragment: Fragment() {
 
     lateinit var mViewModel:RankViewModel
+    lateinit var mDBViewModel:FavVideoViewModel
     var mRankList = mutableListOf<RankListBean.Item>()
     private lateinit var mRankAdapter: RankAdapter
 
@@ -61,6 +66,7 @@ class RankFragment: Fragment() {
     private fun initRec() {
         val strategy =  (arguments as Bundle).getString("strategy","")
         mViewModel = getRankViewModel(this,strategy)
+        mDBViewModel = getFavVideoViewModel(this)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
         val itemOnClickListener = object : HomeAdapter.ItemOnClickListener{
@@ -68,7 +74,7 @@ class RankFragment: Fragment() {
                 navigateToPlayDetail(mRankList[idx].data.id,mRankList[idx].data.playUrl,mRankList[idx].data.title,mRankList[idx].data.cover.detail)
             }
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action))
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mRankList[idx].data)
             }
         }
         mRankAdapter = RankAdapter(mRankList,itemOnClickListener)
@@ -110,14 +116,14 @@ class RankFragment: Fragment() {
         startActivity(intent)
     }
 
-    private fun showPopMenu(view: View){
-        val popupMenu = PopupMenu(context,view, Gravity.END)
+    private fun showPopMenu(view: View,video: VideoInfoBean){
+        val popupMenu = PopupMenu(context,view,Gravity.END)
         popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.action_fav->{
-
+                    mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
 

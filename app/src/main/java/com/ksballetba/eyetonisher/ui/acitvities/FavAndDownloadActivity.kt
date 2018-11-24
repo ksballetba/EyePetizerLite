@@ -56,7 +56,7 @@ class FavAndDownloadActivity : AppCompatActivity() {
         val layoutManager = LinearLayoutManager(this)
         val itemOnClickListener = object : HomeAdapter.ItemOnClickListener{
             override fun onDetailClick(idx: Int) {
-                navigateToPlayDetail(mFavList[idx].videoId,mFavList[idx].playUrl,mFavList[idx].title,mFavList[idx].cover)
+                navigateToPlayDetail(mFavList[idx].videoId!!,mFavList[idx].playUrl!!,mFavList[idx].title!!,mFavList[idx].cover!!)
             }
             override fun onActionClick(idx: Int) {
                 showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),idx)
@@ -93,7 +93,7 @@ class FavAndDownloadActivity : AppCompatActivity() {
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.action_fav->{
-                    mFavViewModel.deleteVideo(mFavList[idx].videoId)
+                    mFavViewModel.deleteVideo(mFavList[idx].videoId!!)
                     mFavAdapter.delete(idx)
                 }
                 R.id.action_download->{

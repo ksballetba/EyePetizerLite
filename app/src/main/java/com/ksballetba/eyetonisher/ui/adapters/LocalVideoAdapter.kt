@@ -43,7 +43,7 @@ class LocalVideoAdapter(val mItems:MutableList<FavVideoBean>,val mOnClickListene
             val options = RequestOptions().placeholder(R.color.icons).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
             Glide.with(mContext!!).load(model.cover).apply(options).transition(DrawableTransitionOptions.withCrossFade(500)).into(holder.videoItemCover)
             Glide.with(mContext!!).load(model.authorAvater).into(holder.videoItemAvatar)
-            holder.videoItemDuration.text = parseDuration(model.duration!!)
+            holder.videoItemDuration.text = parseDuration(model.duration!! )
             holder.videoItemTitle.text = model.title
             holder.videoItemCategory.text = model.category
             with(holder.videoItem){

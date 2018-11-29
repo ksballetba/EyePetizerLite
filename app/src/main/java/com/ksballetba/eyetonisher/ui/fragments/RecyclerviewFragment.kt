@@ -21,9 +21,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.*
 import com.ksballetba.eyetonisher.network.Status
-import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
-import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
-import com.ksballetba.eyetonisher.ui.acitvities.TopicActivity
+import com.ksballetba.eyetonisher.ui.acitvities.*
 import com.ksballetba.eyetonisher.ui.adapters.*
 import com.ksballetba.eyetonisher.ui.widgets.CategoryAdapterItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
@@ -45,7 +43,7 @@ import org.jetbrains.anko.toast
  * A simple [Fragment] subclass.
  *
  */
-class CategoryDetailFragment : Fragment() {
+class RecyclerviewFragment : Fragment() {
 
     lateinit var mViewModel: CategoryDetailViewModel
     private lateinit var mDBViewModel: FavVideoViewModel
@@ -110,7 +108,7 @@ class CategoryDetailFragment : Fragment() {
             }
 
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mHotVideoList[idx].data)
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action), mHotVideoList[idx].data)
             }
         }
         mHotAdapter = CategoryHotAdapter(mHotVideoList, itemOnClickListener)
@@ -140,7 +138,7 @@ class CategoryDetailFragment : Fragment() {
                     it.type == "video"
                 }.toMutableList()
                 mHotAdapter.update(mHotVideoList)
-                if(!hasBg){
+                if (!hasBg) {
                     val topicBg = activity?.findViewById<ImageView>(R.id.category_bg)
                     Glide.with(context).load(mHotVideoList[3].data.cover.detail).transition(DrawableTransitionOptions.withCrossFade(500)).into(topicBg)
                     hasBg = true
@@ -159,7 +157,7 @@ class CategoryDetailFragment : Fragment() {
             }
 
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),mAllVideoList[idx].data)
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action), mAllVideoList[idx].data)
             }
         }
         mAllAdapter = RankAdapter(mAllVideoList, itemOnClickListener)
@@ -206,11 +204,12 @@ class CategoryDetailFragment : Fragment() {
             override fun onDetailClick(idx: Int) {
 
             }
+
             override fun onActionClick(idx: Int) {
 
             }
         }
-        mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener,mDBViewModel)
+        mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel)
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f, 0f, context!!))
@@ -260,7 +259,7 @@ class CategoryDetailFragment : Fragment() {
 
             }
         }
-        mProvidersAdapter = CategoryPlaylistAdapter(mProviderList, itemOnClickListener,mDBViewModel)
+        mProvidersAdapter = CategoryPlaylistAdapter(mProviderList, itemOnClickListener, mDBViewModel)
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f, 0f, context!!))
@@ -356,8 +355,8 @@ class CategoryDetailFragment : Fragment() {
         category_detail_rec.adapter = animationAdapter
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         cateViewModel.fetchData().observe(viewLifecycleOwner, Observer {
-            cateList.addAll(it.subList(3,it.size))
-            cateAdapter.update(it.subList(3,it.size))
+            cateList.addAll(it.subList(3, it.size))
+            cateAdapter.update(it.subList(3, it.size))
         })
     }
 
@@ -372,7 +371,7 @@ class CategoryDetailFragment : Fragment() {
             }
 
             override fun onActionClick(idx: Int) {
-                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action),recoList[idx].data.content.data)
+                showPopMenu(layoutManager.findViewByPosition(idx)!!.findViewById(R.id.video_item_action), recoList[idx].data.content.data)
             }
         }
         val recoAdapter = HomeAdapter(recoList, itemOnClickListener)
@@ -428,28 +427,49 @@ class CategoryDetailFragment : Fragment() {
         startActivity(intent)
     }
 
-    private fun navigateToTopic(id:Int){
+    private fun navigateToTopic(id: Int) {
         val intent = Intent(activity, TopicActivity::class.java)
-        intent.putExtra("topic_id",id)
+        intent.putExtra("topic_id", id)
         startActivity(intent)
     }
 
-    private fun showPopMenu(view: View,video:VideoInfoBean){
-        val popupMenu = PopupMenu(context,view,Gravity.END)
-        popupMenu.menuInflater.inflate(R.menu.popup_menu,popupMenu.menu)
+    private fun showPopMenu(view: View, video: VideoInfoBean) {
+        val popupMenu = PopupMenu(context, view, Gravity.END)
+        popupMenu.menuInflater.inflate(R.menu.popup_menu, popupMenu.menu)
         popupMenu.show()
         popupMenu.setOnMenuItemClickListener {
-            when(it.itemId){
-                R.id.action_fav->{
+            when (it.itemId) {
+                R.id.action_fav -> {
                     mDBViewModel.insertVideo(createFavVideo(video))
                 }
-                R.id.action_download->{
-
+                R.id.action_download -> {
+                    downloadVideo(video.playUrl, video.title)
                 }
             }
             true
         }
     }
+
+    private fun downloadVideo(url: String, fileName: String) {
+        when (activity?.javaClass?.simpleName) {
+            "MoreActivity" -> {
+                val activity = activity as MoreActivity
+                val downloadBinder = activity.mDownloadBinder
+                if (downloadBinder != null) {
+                    downloadBinder.startDownload(url, fileName)
+                }
+            }
+            "CategoryActivity"->{
+                val activity = activity as CategoryActivity
+                val downloadBinder = activity.mDownloadBinder
+                if (downloadBinder != null) {
+                    downloadBinder.startDownload(url, fileName)
+                }
+            }
+        }
+//
+    }
+
 
     private fun initRefresh() {
         category_detail_refresh.setEnableRefresh(true)

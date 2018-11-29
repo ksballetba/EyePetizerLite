@@ -19,6 +19,7 @@ import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.RankListBean
 import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.network.Status
+import com.ksballetba.eyetonisher.ui.acitvities.MainActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.RankAdapter
@@ -126,10 +127,18 @@ class RankFragment: Fragment() {
                     mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
-
+                    downloadVideo(video.playUrl,video.title)
                 }
             }
             true
+        }
+    }
+
+    private fun downloadVideo(url:String,fileName:String){
+        val activity = activity as MainActivity
+        val downloadBinder = activity.mDownloadBinder
+        if (downloadBinder != null) {
+            downloadBinder.startDownload(url,fileName)
         }
     }
 

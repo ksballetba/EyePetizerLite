@@ -1,10 +1,14 @@
 package com.ksballetba.eyetonisher.ui.acitvities
 
 import android.Manifest
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -13,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.ksballetba.eyetonisher.R
+import com.ksballetba.eyetonisher.services.DownloadService
 import com.ksballetba.eyetonisher.ui.fragments.*
 import kotlinx.android.synthetic.main.main_activity.*
 import pub.devrel.easypermissions.AfterPermissionGranted
@@ -28,6 +33,18 @@ class MainActivity : AppCompatActivity() {
     lateinit var mExplorerFragment: ExplorerFragment
     lateinit var mHotFragment: HotFragment
     val mFragmentList = ArrayList<Fragment>()
+
+    var mDownloadBinder:DownloadService.DownloadBinder? = null
+
+    private val connection = object : ServiceConnection{
+        override fun onServiceDisconnected(p0: ComponentName?) {
+
+        }
+
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            mDownloadBinder = p1 as DownloadService.DownloadBinder
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,8 +148,15 @@ class MainActivity : AppCompatActivity() {
 
     @AfterPermissionGranted(MainActivity.PERMISSISON_CODE)
     private fun requestPermissions(){
-        EasyPermissions.requestPermissions(this, "需要获取权限",
-                MainActivity.PERMISSISON_CODE, Manifest.permission_group.STORAGE)
+        if(EasyPermissions.hasPermissions(this,Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+            val intent = Intent(this,DownloadService::class.java)
+            startService(intent)
+            bindService(intent,connection, Context.BIND_AUTO_CREATE)
+        }
+        else{
+            EasyPermissions.requestPermissions(this, "需要获取权限",
+                    MainActivity.PERMISSISON_CODE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
     }
 
 }

@@ -18,10 +18,7 @@ import com.ksballetba.eyetonisher.data.bean.CateListBean
 import com.ksballetba.eyetonisher.data.bean.HomeListBean
 import com.ksballetba.eyetonisher.data.bean.TopicListBean
 import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
-import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
-import com.ksballetba.eyetonisher.ui.acitvities.MoreActivity
-import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
-import com.ksballetba.eyetonisher.ui.acitvities.TopicActivity
+import com.ksballetba.eyetonisher.ui.acitvities.*
 import com.ksballetba.eyetonisher.ui.adapters.CateAdapter
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.TopicAdapter
@@ -158,10 +155,18 @@ class ExplorerFragment : Fragment() {
                     mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
-
+                    downloadVideo(video.playUrl,video.title)
                 }
             }
             true
+        }
+    }
+
+   private fun downloadVideo(url:String,fileName:String){
+        val activity = activity as MainActivity
+        val downloadBinder = activity.mDownloadBinder
+        if (downloadBinder != null) {
+            downloadBinder.startDownload(url,fileName)
         }
     }
 }

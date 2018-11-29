@@ -2,9 +2,8 @@ package com.ksballetba.eyetonisher.network
 
 import com.ksballetba.eyetonisher.data.bean.*
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import okhttp3.ResponseBody
+import retrofit2.http.*
 
 // 日报
 //http://baobab.kaiyanapp.com/api/v5/index/tab/feed
@@ -42,6 +41,8 @@ import retrofit2.http.Query
 //http://baobab.kaiyanapp.com/api/v2/replies/video?videoId=135980
 // 推送
 //http://baobab.kaiyanapp.com/api/v3/messages?vc=411&deviceModel=Nexus%206P
+//视频下载
+//http://baobab.kaiyanapp.com/api/v1/playUrl?vid=135586&resourceType=video&editionType=default&source=aliyun
 
 interface ApiService{
     @GET("v5/index/tab/feed")
@@ -82,5 +83,9 @@ interface ApiService{
 
     @GET("v3/lightTopics/internal/{id}")
     fun getTopicDeatail(@Path("id") id:Int):Observable<TopicInfoBean>
+
+    @Streaming
+    @GET
+    fun downloadVideo(@Url url:String):Observable<ResponseBody>
 
 }

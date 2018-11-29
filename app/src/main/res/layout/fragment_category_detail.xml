@@ -8,7 +8,7 @@
     android:background="@color/icons"
     app:srlPrimaryColor="@color/colorPrimary"
     app:srlEnablePreviewInEditMode="true"
-    tools:context=".ui.fragments.CategoryDetailFragment">
+    tools:context=".ui.fragments.RecyclerviewFragment">
 
     <com.scwang.smartrefresh.header.MaterialHeader
         android:layout_width="match_parent"

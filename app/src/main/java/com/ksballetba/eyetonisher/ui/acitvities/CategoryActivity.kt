@@ -1,13 +1,19 @@
 package com.ksballetba.eyetonisher.ui.acitvities
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.ksballetba.eyetonisher.R
-import com.ksballetba.eyetonisher.ui.fragments.CategoryDetailFragment
+import com.ksballetba.eyetonisher.services.DownloadService
+import com.ksballetba.eyetonisher.ui.fragments.RecyclerviewFragment
 import com.ksballetba.eyetonisher.ui.widgets.AppBarStateChangeListener
 import com.ksballetba.eyetonisher.utilities.setTabWidth
 import kotlinx.android.synthetic.main.activity_category.*
@@ -15,10 +21,22 @@ import kotlinx.android.synthetic.main.activity_category.*
 class CategoryActivity : AppCompatActivity() {
 
     val mFragmentList = mutableListOf<Fragment>()
-    private lateinit var mHotVideoFragment: CategoryDetailFragment
-    private lateinit var mAllVideoFragment: CategoryDetailFragment
-    private lateinit var mPlaylistFragment: CategoryDetailFragment
-    private lateinit var mProviderListFragment: CategoryDetailFragment
+    private lateinit var mHotVideoFragment: RecyclerviewFragment
+    private lateinit var mAllVideoFragment: RecyclerviewFragment
+    private lateinit var mPlaylistFragment: RecyclerviewFragment
+    private lateinit var mProviderListFragment: RecyclerviewFragment
+
+    var mDownloadBinder: DownloadService.DownloadBinder? = null
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceDisconnected(p0: ComponentName?) {
+
+        }
+
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            mDownloadBinder = p1 as DownloadService.DownloadBinder
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +45,7 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_category)
         initToolbar()
         initFragments()
+        initService()
     }
 
     private fun initToolbar(){
@@ -104,10 +123,10 @@ class CategoryActivity : AppCompatActivity() {
     }
 
     private fun initFragments(){
-        mHotVideoFragment = CategoryDetailFragment()
-        mAllVideoFragment = CategoryDetailFragment()
-        mPlaylistFragment = CategoryDetailFragment()
-        mProviderListFragment = CategoryDetailFragment()
+        mHotVideoFragment = RecyclerviewFragment()
+        mAllVideoFragment = RecyclerviewFragment()
+        mPlaylistFragment = RecyclerviewFragment()
+        mProviderListFragment = RecyclerviewFragment()
 
         val hotBundle = Bundle()
         hotBundle.putString("init_type","hotvideolist")
@@ -136,6 +155,11 @@ class CategoryActivity : AppCompatActivity() {
         category_tablayout.getTabAt(1)?.text = "全部"
         category_tablayout.getTabAt(2)?.text = "专辑"
         category_tablayout.getTabAt(3)?.text = "作者"
+    }
+    private fun initService(){
+        val intent = Intent(this,DownloadService::class.java)
+        startService(intent)
+        bindService(intent,connection, Context.BIND_AUTO_CREATE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

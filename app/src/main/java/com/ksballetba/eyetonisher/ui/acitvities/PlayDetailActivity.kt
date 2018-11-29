@@ -1,7 +1,11 @@
 package com.ksballetba.eyetonisher.ui.acitvities
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -17,6 +21,7 @@ import com.bumptech.glide.Glide
 import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.RelatedVideoBean
 import com.ksballetba.eyetonisher.data.bean.RepliesBean
+import com.ksballetba.eyetonisher.services.DownloadService
 import com.ksballetba.eyetonisher.ui.adapters.CommentAdapter
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.RelatedVideoAdapter
@@ -38,6 +43,18 @@ class PlayDetailActivity : GSYBaseActivityDetail<StandardGSYVideoPlayer>() {
     private var videoId = 0
     private lateinit var mViewModel:VideoDetailViewModel
 
+    var mDownloadBinder: DownloadService.DownloadBinder? = null
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceDisconnected(p0: ComponentName?) {
+
+        }
+
+        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
+            mDownloadBinder = p1 as DownloadService.DownloadBinder
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
@@ -55,6 +72,7 @@ class PlayDetailActivity : GSYBaseActivityDetail<StandardGSYVideoPlayer>() {
         initVideoInfo()
         initRecoRec()
         initCommentRec()
+        initService()
         video_player.startButton.performClick()
     }
 
@@ -126,6 +144,11 @@ class PlayDetailActivity : GSYBaseActivityDetail<StandardGSYVideoPlayer>() {
             commentAdapter.update(commentList)
         })
     }
+    private fun initService(){
+        val intent = Intent(this,DownloadService::class.java)
+        startService(intent)
+        bindService(intent,connection, Context.BIND_AUTO_CREATE)
+    }
 
 
     private fun initBackButton(){
@@ -160,6 +183,12 @@ class PlayDetailActivity : GSYBaseActivityDetail<StandardGSYVideoPlayer>() {
                 }
             }
             true
+        }
+    }
+
+    private fun downloadVideo(url:String,fileName:String){
+        if (mDownloadBinder != null) {
+            mDownloadBinder!!.startDownload(url,fileName)
         }
     }
 

@@ -37,6 +37,11 @@
         <activity android:name=".ui.acitvities.CategoryActivity" />
         <activity android:name=".ui.acitvities.MoreActivity" />
         <activity android:name=".ui.acitvities.FavAndDownloadActivity"></activity>
+
+        <service
+            android:name=".services.DownloadService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

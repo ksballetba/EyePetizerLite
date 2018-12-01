@@ -153,7 +153,7 @@ class CategoryDetailDataSource constructor(val id: Int){
                 .subscribeBy(
                         onNext = {
                             callBack(it.itemList.toMutableList())
-                            mPlaylistNextPageKey=5
+                            mPlaylistNextPageKey+=5
                             mLoadStatus.postValue(NetworkState.LOADED)
                         },
                         onComplete = {

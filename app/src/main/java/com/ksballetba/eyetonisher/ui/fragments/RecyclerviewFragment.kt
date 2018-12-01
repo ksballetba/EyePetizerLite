@@ -65,9 +65,6 @@ class RecyclerviewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (activity is CategoryActivity) {
-            val act = activity as CategoryActivity
-        }
         val id = activity?.intent?.getIntExtra("category_id", 0)
         val type = (arguments as Bundle).getString("init_type", "")
         initRefresh()
@@ -209,7 +206,10 @@ class RecyclerviewFragment : Fragment() {
 
             }
         }
-        mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel)
+        if (activity is CategoryActivity) {
+            val act = activity as CategoryActivity
+            mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel,act)
+        }
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f, 0f, context!!))
@@ -259,7 +259,10 @@ class RecyclerviewFragment : Fragment() {
 
             }
         }
-        mProvidersAdapter = CategoryPlaylistAdapter(mProviderList, itemOnClickListener, mDBViewModel)
+        if (activity is CategoryActivity) {
+            val act = activity as CategoryActivity
+            mProvidersAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel,act)
+        }
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
         category_detail_rec.addItemDecoration(MarginDividerItemDecoration(0f, 0f, context!!))

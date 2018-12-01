@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.PopupMenu
 import android.widget.TextView
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.ksballetba.eyetonisher.R
 import com.ksballetba.eyetonisher.data.bean.CategotyPlaylistBean
 import com.ksballetba.eyetonisher.data.bean.RankListBean
 import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
+import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.widgets.BannerItemDecoration
 import com.ksballetba.eyetonisher.utilities.createFavVideo
@@ -22,7 +24,7 @@ import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>,val mOnClickListener: HomeAdapter.ItemOnClickListener,val mDBViewModel: FavVideoViewModel) : RecyclerView.Adapter<CategoryPlaylistAdapter.ViewHolder>() {
+class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>,val mOnClickListener: HomeAdapter.ItemOnClickListener,val mDBViewModel: FavVideoViewModel,val activity:CategoryActivity) : RecyclerView.Adapter<CategoryPlaylistAdapter.ViewHolder>() {
     internal var mContext: Context? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -95,7 +97,6 @@ class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>
     fun add(addData: List<CategotyPlaylistBean.Item>) {
         mItems.addAll(addData)
         notifyItemRangeInserted(mItems.size-addData.size,mItems.size-1)
-//        notifyDataSetChanged()
     }
 
 
@@ -118,7 +119,9 @@ class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>
                     mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
-
+                    if (activity.mDownloadBinder != null) {
+                        activity.mDownloadBinder!!.startDownload(video.playUrl,video.title)
+                    }
                 }
             }
             true

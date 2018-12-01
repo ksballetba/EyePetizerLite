@@ -5,6 +5,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.ksballetba.eyetonisher.data.source.local.DownloadVideoDao
+import com.ksballetba.eyetonisher.data.source.local.DownloadVideoRepository
 import com.ksballetba.eyetonisher.data.source.local.FavVideoDao
 import com.ksballetba.eyetonisher.data.source.local.FavVideoRepository
 import com.ksballetba.eyetonisher.data.source.remote.*
@@ -103,5 +105,24 @@ fun getFavVideoViewModel(fragment: Fragment): FavVideoViewModel {
     })[FavVideoViewModel::class.java]
 }
 
+fun getDownloadVideoViewModel(activity: FragmentActivity): DownloadVideoViewModel {
+    return ViewModelProviders.of(activity, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = DownloadVideoRepository(DownloadVideoDao())
+            @Suppress("UNCHECKED_CAST")
+            return DownloadVideoViewModel(respository) as T
+        }
+    })[DownloadVideoViewModel::class.java]
+}
+
+fun getDownloadVideoViewModel(fragment: Fragment): DownloadVideoViewModel {
+    return ViewModelProviders.of(fragment, object : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val respository = DownloadVideoRepository(DownloadVideoDao())
+            @Suppress("UNCHECKED_CAST")
+            return DownloadVideoViewModel(respository) as T
+        }
+    })[DownloadVideoViewModel::class.java]
+}
 
 

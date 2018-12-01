@@ -13,7 +13,6 @@ class FavVideoRepository(private val favVideoDao: FavVideoDao) : BaseRepository(
             favVideoDao.insertVideo(video)
         }
     }
-
     fun deleteVideo(id: Int) {
         favVideoDao.deleteVideo(id)
     }

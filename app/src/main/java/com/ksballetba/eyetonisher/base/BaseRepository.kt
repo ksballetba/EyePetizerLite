@@ -6,7 +6,7 @@ open class BaseRepository {
 
     internal var mDisposable: Disposable? = null
 
-    fun destory(): Unit {
+    fun destory() {
         if (mDisposable !=null && !mDisposable!!.isDisposed)
             mDisposable!!.dispose()
     }

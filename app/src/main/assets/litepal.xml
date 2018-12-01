@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <litepal>
-    <dbname value = "favvideos"/>
-    <version value = "1"/>
+    <dbname value = "favanddownloadvideos"/>
+    <version value = "2"/>
     <list>
         <mapping class="com.ksballetba.eyetonisher.data.bean.FavVideoBean" />
+        <mapping class="com.ksballetba.eyetonisher.data.bean.DownloadVideoBean" />
     </list>
 </litepal>

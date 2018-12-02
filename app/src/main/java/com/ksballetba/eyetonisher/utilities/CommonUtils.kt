@@ -5,6 +5,7 @@ import android.util.TypedValue
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
+import com.ksballetba.eyetonisher.data.bean.DownloadVideoBean
 import com.ksballetba.eyetonisher.data.bean.FavVideoBean
 import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.ui.acitvities.MainActivity
@@ -67,5 +68,59 @@ fun createFavVideo(videoInfo: VideoInfoBean): FavVideoBean {
             videoInfo.slogan
     )
     return favVideo
+}
+
+fun createDownloadVideo(videoInfo: VideoInfoBean): DownloadVideoBean {
+    val downloadVideo = DownloadVideoBean(
+            videoInfo.id,
+            videoInfo.cover.detail,
+            videoInfo.author.icon,
+            videoInfo.author.name,
+            videoInfo.title,
+            videoInfo.category,
+            videoInfo.duration,
+            videoInfo.playUrl,
+            videoInfo.description,
+            videoInfo.consumption.collectionCount,
+            videoInfo.consumption.replyCount,
+            videoInfo.slogan
+    )
+    return downloadVideo
+}
+
+fun parseDownloadVideo(favVideoBean: FavVideoBean): DownloadVideoBean {
+    val downloadVideo = DownloadVideoBean(
+            favVideoBean.videoId,
+            favVideoBean.cover,
+            favVideoBean.authorAvater,
+            favVideoBean.authorName,
+            favVideoBean.title,
+            favVideoBean.category,
+            favVideoBean.duration,
+            favVideoBean.playUrl,
+            favVideoBean.description,
+            favVideoBean.commentCount,
+            favVideoBean.commentCount,
+            favVideoBean.slogan
+    )
+    return downloadVideo
+}
+
+fun parseFavVideo(downloadVideoBean: DownloadVideoBean): FavVideoBean {
+    val favVideoBean = FavVideoBean(
+            downloadVideoBean.videoId,
+            downloadVideoBean.cover,
+            downloadVideoBean.authorAvater,
+            downloadVideoBean.authorName,
+            downloadVideoBean.title,
+            downloadVideoBean.category,
+            downloadVideoBean.duration,
+            downloadVideoBean.playUrl,
+            downloadVideoBean.description,
+            downloadVideoBean.commentCount,
+            downloadVideoBean.commentCount,
+            downloadVideoBean.slogan
+    )
+    return favVideoBean
 }
 

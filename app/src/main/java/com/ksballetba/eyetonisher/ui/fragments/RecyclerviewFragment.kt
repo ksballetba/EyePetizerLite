@@ -27,6 +27,7 @@ import com.ksballetba.eyetonisher.ui.widgets.CategoryAdapterItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
 import com.ksballetba.eyetonisher.utilities.*
 import com.ksballetba.eyetonisher.viewmodel.CategoryDetailViewModel
+import com.ksballetba.eyetonisher.viewmodel.DownloadVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.TopicViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
@@ -47,6 +48,7 @@ class RecyclerviewFragment : Fragment() {
 
     lateinit var mViewModel: CategoryDetailViewModel
     private lateinit var mDBViewModel: FavVideoViewModel
+    private lateinit var mDownloadViewModel: DownloadVideoViewModel
     var mHotVideoList = mutableListOf<CategoryHomeListBean.Item>()
     var mAllVideoList = mutableListOf<RankListBean.Item>()
     var mPlayList = mutableListOf<CategotyPlaylistBean.Item>()
@@ -69,6 +71,7 @@ class RecyclerviewFragment : Fragment() {
         val type = (arguments as Bundle).getString("init_type", "")
         initRefresh()
         mDBViewModel = getFavVideoViewModel(this)
+        mDownloadViewModel = getDownloadVideoViewModel(this)
         when (type) {
             "hotvideolist" -> {
                 initHotRec(id!!)
@@ -208,7 +211,7 @@ class RecyclerviewFragment : Fragment() {
         }
         if (activity is CategoryActivity) {
             val act = activity as CategoryActivity
-            mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel,act)
+            mPlaylistAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel,mDownloadViewModel,act)
         }
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
@@ -261,7 +264,7 @@ class RecyclerviewFragment : Fragment() {
         }
         if (activity is CategoryActivity) {
             val act = activity as CategoryActivity
-            mProvidersAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel,act)
+            mProvidersAdapter = CategoryPlaylistAdapter(mPlayList, itemOnClickListener, mDBViewModel,mDownloadViewModel,act)
         }
         category_detail_rec.layoutManager = layoutManager
         category_detail_rec.itemAnimator = SlideInUpAnimator(OvershootInterpolator(1f))
@@ -447,6 +450,7 @@ class RecyclerviewFragment : Fragment() {
                 }
                 R.id.action_download -> {
                     downloadVideo(video.playUrl, video.title)
+                    mDownloadViewModel.insertVideo(createDownloadVideo(video))
                 }
             }
             true

@@ -24,9 +24,8 @@ import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.RankAdapter
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
-import com.ksballetba.eyetonisher.utilities.createFavVideo
-import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
-import com.ksballetba.eyetonisher.utilities.getRankViewModel
+import com.ksballetba.eyetonisher.utilities.*
+import com.ksballetba.eyetonisher.viewmodel.DownloadVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.RankViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
@@ -46,6 +45,7 @@ class RankFragment: Fragment() {
 
     lateinit var mViewModel:RankViewModel
     lateinit var mDBViewModel:FavVideoViewModel
+    private lateinit var mDownloadViewModel: DownloadVideoViewModel
     var mRankList = mutableListOf<RankListBean.Item>()
     private lateinit var mRankAdapter: RankAdapter
 
@@ -68,6 +68,7 @@ class RankFragment: Fragment() {
         val strategy =  (arguments as Bundle).getString("strategy","")
         mViewModel = getRankViewModel(this,strategy)
         mDBViewModel = getFavVideoViewModel(this)
+        mDownloadViewModel = getDownloadVideoViewModel(this)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
         val itemOnClickListener = object : HomeAdapter.ItemOnClickListener{
@@ -128,6 +129,7 @@ class RankFragment: Fragment() {
                 }
                 R.id.action_download->{
                     downloadVideo(video.playUrl,video.title)
+                    mDownloadViewModel.insertVideo(createDownloadVideo(video))
                 }
             }
             true

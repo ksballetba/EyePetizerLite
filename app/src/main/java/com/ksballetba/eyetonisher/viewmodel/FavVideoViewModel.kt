@@ -15,4 +15,6 @@ class FavVideoViewModel(private val favVideoRepository: FavVideoRepository):Base
     fun deleteVideo(id:Int){
         favVideoRepository.deleteVideo(id)
     }
+
+    fun isLiked(videoId:Int) = favVideoRepository.isLiked(videoId)
 }

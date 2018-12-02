@@ -24,6 +24,7 @@ import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.adapters.TopicAdapter
 import com.ksballetba.eyetonisher.ui.widgets.BannerItemDecoration
 import com.ksballetba.eyetonisher.utilities.*
+import com.ksballetba.eyetonisher.viewmodel.DownloadVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.TopicViewModel
 import kotlinx.android.synthetic.main.fragment_explorer.*
@@ -31,6 +32,7 @@ import kotlinx.android.synthetic.main.fragment_explorer.*
 class ExplorerFragment : Fragment() {
 
     private lateinit var mDBViewModel: FavVideoViewModel
+    private lateinit var mDownloadViewModel: DownloadVideoViewModel
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -91,6 +93,7 @@ class ExplorerFragment : Fragment() {
 
     private fun initReco(){
         mDBViewModel = getFavVideoViewModel(this)
+        mDownloadViewModel = getDownloadVideoViewModel(this)
         var recoList = mutableListOf<HomeListBean.Item>()
         val recoViewModel = getHomeViewModel(this)
         val layoutManager = LinearLayoutManager(context)
@@ -156,6 +159,7 @@ class ExplorerFragment : Fragment() {
                 }
                 R.id.action_download->{
                     downloadVideo(video.playUrl,video.title)
+                    mDownloadViewModel.insertVideo(createDownloadVideo(video))
                 }
             }
             true

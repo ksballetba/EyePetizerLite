@@ -16,4 +16,6 @@ class FavVideoRepository(private val favVideoDao: FavVideoDao) : BaseRepository(
     fun deleteVideo(id: Int) {
         favVideoDao.deleteVideo(id)
     }
+
+    fun isLiked(videoId:Int) = favVideoDao.isLiked(videoId)
 }

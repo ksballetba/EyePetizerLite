@@ -12,15 +12,4 @@
         android:icon="@drawable/ic_file_download_black_24dp"
         android:title="@string/menu_download" />
 
-    <item
-        android:id="@+id/nav_history"
-        android:icon="@drawable/ic_restore_black_24dp"
-        android:title="@string/menu_history" />
-
-    <item
-        android:id="@+id/nav_comments"
-        android:icon="@drawable/ic_comment_black_24dp"
-        android:title="@string/menu_comments" />
-
-
 </menu>

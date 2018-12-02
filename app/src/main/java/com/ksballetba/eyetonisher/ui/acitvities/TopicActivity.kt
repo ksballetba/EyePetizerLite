@@ -31,10 +31,8 @@ import com.ksballetba.eyetonisher.ui.adapters.TopicDetailVideoAdapter
 import com.ksballetba.eyetonisher.ui.widgets.AppBarStateChangeListener
 import com.ksballetba.eyetonisher.ui.widgets.HeaderItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
-import com.ksballetba.eyetonisher.utilities.createFavVideo
-import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
-import com.ksballetba.eyetonisher.utilities.getHomeViewModel
-import com.ksballetba.eyetonisher.utilities.getTopicDetailViewModel
+import com.ksballetba.eyetonisher.utilities.*
+import com.ksballetba.eyetonisher.viewmodel.DownloadVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.TopicDetailViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
@@ -47,9 +45,9 @@ import org.jetbrains.anko.toast
 class TopicActivity : AppCompatActivity() {
     private lateinit var mViewModel:TopicDetailViewModel
     private lateinit var mDBViewModel:FavVideoViewModel
+    private lateinit var mDownloadViewModel: DownloadVideoViewModel
     var mList = mutableListOf<TopicInfoBean.Item>()
     private lateinit var mAdapter: TopicDetailVideoAdapter
-
     var mDownloadBinder: DownloadService.DownloadBinder? = null
 
     private val connection = object : ServiceConnection {
@@ -96,6 +94,7 @@ class TopicActivity : AppCompatActivity() {
         val id = intent.getIntExtra("topic_id",0)
         mViewModel = getTopicDetailViewModel(this,id)
         mDBViewModel = getFavVideoViewModel(this)
+        mDownloadViewModel = getDownloadVideoViewModel(this)
         val layoutManager = LinearLayoutManager(this)
         layoutManager.orientation = RecyclerView.VERTICAL
         topic_video_rec.layoutManager = layoutManager
@@ -149,6 +148,7 @@ class TopicActivity : AppCompatActivity() {
                 }
                 R.id.action_download->{
                     downloadVideo(video.playUrl,video.title)
+                    mDownloadViewModel.insertVideo(createDownloadVideo(video))
                 }
             }
             true

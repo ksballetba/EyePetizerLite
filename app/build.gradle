@@ -27,6 +27,13 @@ android {
     dataBinding {
         enabled = true
     }
+    dexOptions{
+        javaMaxHeapSize "1g"
+        incremental true
+        jumboMode = true
+        preDexLibraries = true
+        threadCount = 8
+    }
 }
 
 dependencies {

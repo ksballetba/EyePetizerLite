@@ -24,9 +24,8 @@ import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.adapters.HomeAdapter
 import com.ksballetba.eyetonisher.ui.widgets.MarginDividerItemDecoration
 import com.ksballetba.eyetonisher.ui.widgets.HeaderItemDecoration
-import com.ksballetba.eyetonisher.utilities.createFavVideo
-import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
-import com.ksballetba.eyetonisher.utilities.getHomeViewModel
+import com.ksballetba.eyetonisher.utilities.*
+import com.ksballetba.eyetonisher.viewmodel.DownloadVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.HomeViewModel
 import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter
@@ -43,6 +42,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var mViewModel: HomeViewModel
     private lateinit var mDBViewModel: FavVideoViewModel
+    private lateinit var mDownloadViewModel: DownloadVideoViewModel
     var mHomeList = mutableListOf<HomeListBean.Item>()
     private lateinit var mHomeAdapter: HomeAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -60,6 +60,7 @@ class HomeFragment : Fragment() {
     private fun initRec() {
         mViewModel = getHomeViewModel(this)
         mDBViewModel = getFavVideoViewModel(this)
+        mDownloadViewModel = getDownloadVideoViewModel(this)
         val layoutManager = LinearLayoutManager(context)
         layoutManager.orientation = RecyclerView.VERTICAL
         home_rec.layoutManager = layoutManager
@@ -124,7 +125,8 @@ class HomeFragment : Fragment() {
                     mDBViewModel.insertVideo(createFavVideo(video))
                 }
                 R.id.action_download->{
-                   downloadVideo(video.playUrl,video.title)
+                    downloadVideo(video.playUrl,video.title)
+                    mDownloadViewModel.insertVideo(createDownloadVideo(video))
                 }
             }
             true
@@ -137,6 +139,7 @@ class HomeFragment : Fragment() {
         if (downloadBinder != null) {
             downloadBinder.startDownload(url,fileName)
         }
+
     }
 
     private fun loadInitial() {

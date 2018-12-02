@@ -9,6 +9,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
@@ -33,7 +34,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var mExplorerFragment: ExplorerFragment
     lateinit var mHotFragment: HotFragment
     val mFragmentList = ArrayList<Fragment>()
-
     var mDownloadBinder:DownloadService.DownloadBinder? = null
 
     private val connection = object : ServiceConnection{
@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity() {
         initUiKit()
         requestPermissions()
     }
+
+
 
     private fun initUiKit() {
         setSupportActionBar(main_toolbar)
@@ -91,13 +93,7 @@ class MainActivity : AppCompatActivity() {
                     navigationToFavAndDownload("fav")
                 }
                 R.id.nav_dowmload->{
-
-                }
-                R.id.nav_history->{
-
-                }
-                R.id.nav_comments->{
-
+                    navigationToFavAndDownload("download")
                 }
             }
             true
@@ -159,6 +155,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            moveTaskToBack(true)
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
 }
 
 class ViewPagerAdapter(var mList: List<Fragment>, fm: FragmentManager?) : FragmentStatePagerAdapter(fm) {

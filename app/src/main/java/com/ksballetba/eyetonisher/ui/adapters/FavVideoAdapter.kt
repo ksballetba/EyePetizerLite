@@ -17,7 +17,7 @@ import com.ksballetba.eyetonisher.data.bean.FavVideoBean
 import com.ksballetba.eyetonisher.utilities.parseDuration
 import de.hdodenhof.circleimageview.CircleImageView
 
-class LocalVideoAdapter(val mItems:MutableList<FavVideoBean>,val mOnClickListener: HomeAdapter.ItemOnClickListener): RecyclerView.Adapter<LocalVideoAdapter.ViewHolder>(){
+class FavVideoAdapter(val mItems:MutableList<FavVideoBean>, val mOnClickListener: HomeAdapter.ItemOnClickListener): RecyclerView.Adapter<FavVideoAdapter.ViewHolder>(){
     internal var mContext: Context? = null
 
     class ViewHolder(view: View):RecyclerView.ViewHolder(view){

@@ -19,12 +19,14 @@ import com.ksballetba.eyetonisher.data.bean.VideoInfoBean
 import com.ksballetba.eyetonisher.ui.acitvities.CategoryActivity
 import com.ksballetba.eyetonisher.ui.acitvities.PlayDetailActivity
 import com.ksballetba.eyetonisher.ui.widgets.BannerItemDecoration
+import com.ksballetba.eyetonisher.utilities.createDownloadVideo
 import com.ksballetba.eyetonisher.utilities.createFavVideo
 import com.ksballetba.eyetonisher.utilities.getFavVideoViewModel
+import com.ksballetba.eyetonisher.viewmodel.DownloadVideoViewModel
 import com.ksballetba.eyetonisher.viewmodel.FavVideoViewModel
 import de.hdodenhof.circleimageview.CircleImageView
 
-class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>,val mOnClickListener: HomeAdapter.ItemOnClickListener,val mDBViewModel: FavVideoViewModel,val activity:CategoryActivity) : RecyclerView.Adapter<CategoryPlaylistAdapter.ViewHolder>() {
+class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>,val mOnClickListener: HomeAdapter.ItemOnClickListener,val mDBViewModel: FavVideoViewModel,val mDownloadVideoViewModel: DownloadVideoViewModel,val activity:CategoryActivity) : RecyclerView.Adapter<CategoryPlaylistAdapter.ViewHolder>() {
     internal var mContext: Context? = null
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -122,6 +124,7 @@ class CategoryPlaylistAdapter(val mItems: MutableList<CategotyPlaylistBean.Item>
                     if (activity.mDownloadBinder != null) {
                         activity.mDownloadBinder!!.startDownload(video.playUrl,video.title)
                     }
+                    mDownloadVideoViewModel.insertVideo(createDownloadVideo(video))
                 }
             }
             true

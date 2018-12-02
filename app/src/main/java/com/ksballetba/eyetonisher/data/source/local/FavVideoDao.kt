@@ -12,6 +12,7 @@ import org.litepal.extension.findAll
 class FavVideoDao{
 
     private val liveVideos = MutableLiveData<List<FavVideoBean>>()
+    private val isLiked = MutableLiveData<Boolean>()
 
     fun getVideos():LiveData<List<FavVideoBean>>{
         val videos = LitePal.findAll<FavVideoBean>()
@@ -27,5 +28,14 @@ class FavVideoDao{
 
     fun deleteVideo(id:Int){
         LitePal.deleteAll(FavVideoBean::class.java,"videoId = ?", id.toString())
+    }
+
+    fun isLiked(videoId:Int):LiveData<Boolean>{
+        if(LitePal.where("videoId = ?",videoId.toString()).find<FavVideoBean>().isEmpty()){
+            isLiked.postValue(false)
+        }else{
+            isLiked.postValue(true)
+        }
+        return isLiked
     }
 }

@@ -14,8 +14,8 @@ android {
         applicationId "com.ksballetba.eyetonisher"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -29,7 +29,6 @@ android {
     }
     dexOptions{
         javaMaxHeapSize "1g"
-        incremental true
         jumboMode = true
         preDexLibraries = true
         threadCount = 8
@@ -94,6 +93,7 @@ dependencies {
     implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.1'
     implementation 'com.shuyu:gsyVideoPlayer-arm64:6.0.1'
     implementation 'org.litepal.android:kotlin:3.0.0'
+    implementation 'com.airbnb.android:lottie:2.8.0'
     annotationProcessor "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     annotationProcessor "androidx.room:room-compiler:$room_version" //
     testImplementation 'junit:junit:4.12'

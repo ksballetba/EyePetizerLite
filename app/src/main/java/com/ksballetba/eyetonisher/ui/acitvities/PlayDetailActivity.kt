@@ -79,7 +79,6 @@ class PlayDetailActivity : GSYBaseActivityDetail<StandardGSYVideoPlayer>() {
         initBackButton()
         initVideoBuilderMode()
         initVideoInfo()
-
         initRecoRec()
         initCommentRec()
         initService()
@@ -102,9 +101,11 @@ class PlayDetailActivity : GSYBaseActivityDetail<StandardGSYVideoPlayer>() {
                 if(isLiked){
                     mDBViewModel.deleteVideo(videoId)
                     playdetail_favbtn.setImageDrawable(getDrawable(R.drawable.ic_favorite_border_grey_700_24dp))
+                    isLiked = false
                 }else{
                     playdetail_favbtn.setImageDrawable(getDrawable(R.drawable.ic_favorite_red_700_24dp))
                     mDBViewModel.insertVideo(createFavVideo(mVideoInfo))
+                    isLiked = true
                 }
             }
             playdetail_downloadbtn.setOnClickListener {
